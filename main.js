@@ -14,7 +14,7 @@ firebase.initializeApp({
 
 
 // add event listener on cells
-$('.').onclick()
+$('.cell').click()
 
   // get position of cell
 
@@ -36,3 +36,5 @@ $('.').onclick()
 
 
 // create function to check if a player has won
+
+  // c
