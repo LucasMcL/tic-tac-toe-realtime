@@ -2,9 +2,6 @@
 	width: 100px;
 	height: 100px;
 	display: inline-block;
+	border: solid black 1px;
 }
 
-.game-board {
-	width: 300px;
-	height: 300px;
-}
