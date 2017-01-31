@@ -1,4 +1,3 @@
-
 // Initialize Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyAKwiAe0DV9z5EdUMUKQVc5weewhlQHqsg",
@@ -8,10 +7,6 @@ firebase.initializeApp({
   messagingSenderId: "408081498564"
 });
 
-
-
-
-
 // add event listener on cells
 $('.cell').click()
 
@@ -19,7 +14,21 @@ $('.cell').click()
 
   // get current player turn
 
-  // update firebase with "X" or "O" at selected position
+// update firebase with "X" or "O" at selected position
+const gameboardRef = firebase.database().ref('gameboard')
+gameboardRef.on('child_changed', onGameStateChange)
+
+// Event listener updates board every time data is changed in firebase
+function onGameStateChange(snap) {
+	const cellData = snap.val()
+	const cellId = snap.key
+	console.log("game data updated")
+
+	$(`.cell.${cellId}`).text(cellData)
+	console.log($(`.cell.${cellId}`))
+	console.log("cellId", cellId)
+}
+
 
   // firebase realtime will update changes
 
