@@ -6,4 +6,3 @@ firebase.initializeApp({
   storageBucket: "cool-real-time-tic-tac-toe.appspot.com",
   messagingSenderId: "408081498564"
 });
-
