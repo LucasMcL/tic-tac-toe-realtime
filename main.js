@@ -1,5 +1,3 @@
-console.log ("main.js loaded")
-
 
 // Initialize Firebase
 firebase.initializeApp({
@@ -9,6 +7,7 @@ firebase.initializeApp({
   storageBucket: "cool-real-time-tic-tac-toe.appspot.com",
   messagingSenderId: "408081498564"
 });
+
 
 
 
