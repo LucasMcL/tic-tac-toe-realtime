@@ -3,11 +3,33 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Tic Tac Toe</title>
+	<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="main.css">
 </head>
 <body>
 
+<div class="container" class="game-board">
+	<div class="row">
+		<div class="cell" data-target="a1">X</div>
+		<div class="cell" data-target="a2">X</div>
+		<div class="cell" data-target="a3">X</div>
+	</div>
+	<div class="row">
+		<div class="cell" data-target="b1">X</div>
+		<div class="cell" data-target="b2">X</div>
+		<div class="cell" data-target="b3">X</div>
+	</div>
+	<div class="row">
+		<div class="cell" data-target="c1">X</div>
+		<div class="cell" data-target="c2">X</div>
+		<div class="cell" data-target="c3">X</div>
+	</div>
+</div>
 
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/bower_components/firebase/firebase.js"></script>
 <script src="main.js"></script>
 </body>
 </html>

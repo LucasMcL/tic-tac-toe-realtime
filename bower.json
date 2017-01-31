@@ -1,0 +1,21 @@
+{
+  "name": "tic-tac-toe-realtime",
+  "homepage": "https://github.com/LucasMcL/tic-tac-toe-realtime",
+  "authors": [
+    "LucasMcL <LMcLaughlin09@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "firebase": "^3.6.7"
+  }
+}
