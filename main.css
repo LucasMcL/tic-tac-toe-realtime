@@ -3,7 +3,7 @@
  *********************/
 
 .game-container {
-	max-width: 500px;
+	width: 600px;
 }
 
 .game-board {
@@ -11,16 +11,22 @@
   border-collapse: collapse;
 }
 
+.game-board img {
+	height: 100%;
+	width: 100%;
+}
+
 .cell {
-  width: 33.333%;
+  width: 200px;
+  height: 200px;
   border: 6px solid #222;
 }
 
-.cell:after {
+/*.cell:after {
   content: '';
   display: block;
   margin-top: 100%;
-}
+}*/
 
 td:first-of-type {
   border-left-color: transparent;
