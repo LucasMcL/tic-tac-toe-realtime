@@ -44,7 +44,7 @@ $('.cell').click(evt => {
         type: 'PATCH',
         data: JSON.stringify(changeLetterPatch),
         success: function(response) {
-          console.log("Patch successful?")
+          // console.log("Patch successful?")
         }
       })
 
@@ -109,7 +109,7 @@ function changePlayerLetter(currentPlayerLetter){
   console.log("changePlayerLetter function called")
 
   if(currentPlayerLetter === "X") {
-    console.log("New letter is O")
+    // console.log("New letter is O")
     let newLetter = { "current_player": "O" }
 
     $.ajax({
@@ -121,7 +121,7 @@ function changePlayerLetter(currentPlayerLetter){
           }
         })
   } else if (currentPlayerLetter === "O") {
-    console.log("New letter is X")
+    // console.log("New letter is X")
     let newLetter = { "current_player": "X" }
 
     $.ajax({
@@ -133,6 +133,6 @@ function changePlayerLetter(currentPlayerLetter){
           }
         })
   } else {
-    console.log("The current_player was neither 'X' or 'O' ")
+    // console.log("The current_player was neither 'X' or 'O' ")
   }
 }
