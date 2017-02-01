@@ -31,9 +31,7 @@ $('.cell').click(evt => {
   let position = $(evt.target).data('target')
 
   // get current player turn
-  $.when($.get(currentPlayerUrl, data => {
-    playerLetter = data
-  }))
+  $.when($.get(currentPlayerUrl, data => playerLetter = data))
     .then(data => {
 
       // Make object to patch - Lucas, I'm an idiot.  I forgot you had to make keys with variables like this
@@ -49,10 +47,17 @@ $('.cell').click(evt => {
           console.log("Patch successful?")
         }
       })
-    // Change the current players letter in firebase
+
+    // Check for wins.
+    .then(()=> {
+      checkForWin(playerLetter)
+    })
+
+    // Change the current players letter in firebase, if no one won.
     .then(data => {
       changePlayerLetter(playerLetter)
     })
+
   })
 })
 
@@ -95,11 +100,6 @@ function resetGame() {
 
 // update cell with current players letter
 
-
-// create function to check if a player has won
-function checkForWin(){
-  console.log("checkForWin function called")
-}
 
 
 // create a function to switch letter on firebase which is called in the click event listener
