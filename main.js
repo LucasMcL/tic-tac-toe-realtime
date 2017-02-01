@@ -11,8 +11,8 @@ firebase.initializeApp({
 const currentPlayerUrl = "https://cool-real-time-tic-tac-toe.firebaseio.com/gamestate/current_player.json"
 const gameStateUrl = "https://cool-real-time-tic-tac-toe.firebaseio.com/gamestate.json"
 const gameBoardUrl = "https://cool-real-time-tic-tac-toe.firebaseio.com/gameboard.json"
-const xImgUrl = "/img/x.png"
-const oImgUrl = "/img/o.jpg"
+const xImgUrl = "img/x.png"
+const oImgUrl = "img/o.jpg"
 const gameBoardRef = firebase.database().ref('gameboard')
 
 //Event Listeners
