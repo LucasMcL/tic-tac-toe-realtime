@@ -20,7 +20,10 @@ const gameStateRef = firebase.database().ref('gamestate')
 gameBoardRef.on('child_changed', onGameStateChange) //X or O added to game board
 gameStateRef.on('child_changed', onGameOver) // when game is over
 $('.reset-game').click(resetGame)
-$(document).ready(loadInitialGameBoard)
+$(document).ready(() => {
+	triggerSignInModal()
+	loadInitialGameBoard()
+})
 
 // add event listener on cells
 // Things that happen on click:
