@@ -23,6 +23,9 @@ function checkForWin(letter){
 
       console.log("currentGameBoardState", currentGameBoardState)
 
+      let gameBoardIteration = 1;
+
+
       if(currentGameBoardState.a1 === letter &&
          currentGameBoardState.a2 === letter &&
          currentGameBoardState.a3 === letter) {
@@ -37,6 +40,8 @@ function checkForWin(letter){
          currentGameBoardState.b2 === letter &&
          currentGameBoardState.b3 === letter) {
 
+        gameStateRef.update({"player_won": letter})
+
         // break out of function
         return console.log(`${letter} has won!`)
       }
@@ -44,6 +49,8 @@ function checkForWin(letter){
       if(currentGameBoardState.c1 === letter &&
          currentGameBoardState.c2 === letter &&
          currentGameBoardState.c3 === letter) {
+
+        gameStateRef.update({"player_won": letter})
 
         // break out of function
         return console.log(`${letter} has won!`)
@@ -54,6 +61,8 @@ function checkForWin(letter){
          currentGameBoardState.b1 === letter &&
          currentGameBoardState.c1 === letter) {
 
+        gameStateRef.update({"player_won": letter})
+
         // break out of function
         return console.log(`${letter} has won!`)
       }
@@ -62,6 +71,8 @@ function checkForWin(letter){
          currentGameBoardState.b2 === letter &&
          currentGameBoardState.c2 === letter) {
 
+        gameStateRef.update({"player_won": letter})
+
         // break out of function
         return console.log(`${letter} has won!`)
       }
@@ -69,6 +80,8 @@ function checkForWin(letter){
       if(currentGameBoardState.a3 === letter &&
          currentGameBoardState.b3 === letter &&
          currentGameBoardState.c3 === letter) {
+
+        gameStateRef.update({"player_won": letter})
 
         // break out of function
         return console.log(`${letter} has won!`)
@@ -79,6 +92,8 @@ function checkForWin(letter){
          currentGameBoardState.b2 === letter &&
          currentGameBoardState.c3 === letter) {
 
+        gameStateRef.update({"player_won": letter})
+
         // break out of function
         return console.log(`${letter} has won!`)
       }
@@ -87,8 +102,27 @@ function checkForWin(letter){
          currentGameBoardState.b2 === letter &&
          currentGameBoardState.c1 === letter) {
 
+        gameStateRef.update({"player_won": letter})
+
         // break out of function
         return console.log(`${letter} has won!`)
       }
+
+
+      // check every position for a letter - if there are letters in every
+      for (position in currentGameBoardState) {
+
+        // console.log("game board positon length", Object.keys(currentGameBoardState).length)
+        // console.log("for loop iteration", gameBoardIteration)
+        // console.log("equal 9 yet?")
+        // gameBoardIteration++
+
+        if(currentGameBoardState[position] && Object.keys(currentGameBoardState).length === gameBoardIteration){
+          gameStateRef.update({"player_won": "draw"})
+        }
+
+        gameBoardIteration++
+      }
+
     })
 }
