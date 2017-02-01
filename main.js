@@ -1,4 +1,3 @@
-
 // Initialize Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyAKwiAe0DV9z5EdUMUKQVc5weewhlQHqsg",
@@ -11,7 +10,6 @@ firebase.initializeApp({
 const currentPlayerUrl = "https://cool-real-time-tic-tac-toe.firebaseio.com/gamestate/current_player.json"
 const gameStateUrl = "https://cool-real-time-tic-tac-toe.firebaseio.com/gamestate.json"
 const gameBoardUrl = "https://cool-real-time-tic-tac-toe.firebaseio.com/gameboard.json"
-
 
 // add event listener on cells
 $('.cell').click(evt => {
@@ -49,6 +47,20 @@ $('.cell').click(evt => {
 
   // update firebase with "X" or "O" at selected position in the game?
 
+// update firebase with "X" or "O" at selected position
+const gameboardRef = firebase.database().ref('gameboard')
+gameboardRef.on('child_changed', onGameStateChange)
+
+// Event listener updates board every time data is changed in firebase
+function onGameStateChange(snap) {
+	const cellData = snap.val()
+	const cellId = snap.key
+	console.log("game data updated")
+
+	$(`.cell.${cellId}`).text(cellData)
+	console.log($(`.cell.${cellId}`))
+	console.log("cellId", cellId)
+}
 
   // firebase realtime will update changes
 
