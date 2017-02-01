@@ -18,10 +18,12 @@ const oImgUrl = "img/o.jpg"
 const gameBoardRef = firebase.database().ref('gameboard')
 const gameStateRef = firebase.database().ref('gamestate')
 const activeUsersRef = firebase.database().ref('activeUsers')
+const messagesRef = firebase.database().ref('messages')
 
 //Event Listeners
 gameBoardRef.on('child_changed', onGameStateChange) //X or O added to game board
 gameStateRef.on('child_changed', onGameOver) // when game is over
+messagesRef.limitToLast(10).on('child_added', onMessageChange) // when new message is added to firebase
 $('.reset-game').click(resetGame)
 $(document).ready(() => {
 	loadInitialGameBoard()
@@ -39,6 +41,7 @@ $('.cell').click(evt => {
   let position = $(evt.target).data('target')
 
   // get current player turn
+  // NOTE: this needs to be changed to firebase real time!!!!
   $.when($.get(currentPlayerUrl, data => playerLetter = data))
     .then(data => {
 

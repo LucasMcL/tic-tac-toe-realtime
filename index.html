@@ -9,7 +9,11 @@
 </head>
 <body>
 
-<div class="game-container center-block">
+<div class="user-list col-md-3">
+	<div class="user-header">Users</div>
+</div>
+
+<div class="game-container center-block col-md-4">
 	<table class="game-board">
 	  <tr>
 	    <td class="cell a1" data-target="a1"></td>
@@ -29,7 +33,22 @@
 	</table>
 </div>
 
-<!-- Game over modal template -->
+
+<div class="message-board col-md-3">
+
+	<div class="message-header">Message Board</div>
+
+	<div class="message-container"></div>
+
+	<form class="message-form">
+		<input class="message-input-text" type="text" placeholder="Message" name="content"><br>
+		<input class="message-submit-button" type="submit" value="Send Message">
+	</form>
+
+
+</div>
+
+
 <div class="modal fade" tabindex="-1" role="dialog" id="game-over-modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -70,6 +89,7 @@
 
 <!-- our scripts -->
 <script src="checkForWin.js"></script>
+<script src="messages.js"></script>
 <script src="main.js"></script>
 <script src="playerAuth.js"></script>
 </body>
