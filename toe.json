@@ -1,16 +1,16 @@
 {
-    "gameboard": {
-        "a1": " ",
-        "a2": " ",
-        "a3": " ",
-        "b1": " ",
-        "b2": " ",
-        "b3": " ",
-        "c1": " ",
-        "c2": " ",
-        "c3": " "
-    },
-    "gamestate": {
-        "current_player": "X"
-    }
+  "gameboard": {
+    "a1": "X",
+    "a2": "X",
+    "a3": "O",
+    "b1": "O",
+    "b2": "X",
+    "b3": "O",
+    "c1": "X",
+    "c2": "O",
+    "c3": "X"
+  },
+  "gamestate": {
+    "current_player": "X"
+  }
 }
