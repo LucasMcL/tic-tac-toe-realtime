@@ -7,7 +7,7 @@ function checkForWin(letter){
 
   $.when($.get(gameBoardUrl, data => {
     currentGameBoardState = data
-    console.log(currentGameBoardState)
+    // console.log(currentGameBoardState)
   }))
 
     .then(() => {

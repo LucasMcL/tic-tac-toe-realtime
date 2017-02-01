@@ -24,10 +24,10 @@ $(document).ready(loadInitialGameBoard)
 
 // add event listener on cells
 // Things that happen on click:
-	// Data at cell# changed in firebase gameboard object
-	// Player letter updated in firebase gamestate object
+  // Data at cell# changed in firebase gameboard object
+  // Player letter updated in firebase gamestate object
 $('.cell').click(evt => {
-	if( $(evt.target).hasClass('space-taken') ) return
+  if( $(evt.target).hasClass('space-taken') ) return
   let playerLetter;
 
   // get position of cell
@@ -42,14 +42,7 @@ $('.cell').click(evt => {
       changeLetterPatch[position] = playerLetter;
 
       // Make change on gameboard in firebase
-      $.ajax({
-        url: gameBoardUrl,
-        type: 'PATCH',
-        data: JSON.stringify(changeLetterPatch),
-        success: function(response) {
-          console.log("Patch successful?")
-        }
-      })
+      gameBoardRef.update(changeLetterPatch) // ES6 way is too crazy
 
     // Check for wins.
     .then(()=> {
@@ -70,27 +63,27 @@ $('.cell').click(evt => {
 
 // Event listener updates board every time data is changed in firebase
 function onGameStateChange(snap) {
-	// snap contains key/value of data just changed
-	const cellData = snap.val()
-	const cellId = snap.key
-	if(!cellData) return // exit if change was resetting data
-	console.log("Updating DOM to reflect change in database")
+  // snap contains key/value of data just changed
+  const cellData = snap.val()
+  const cellId = snap.key
+  if(!cellData) return // exit if change was resetting data
+  console.log("Updating DOM to reflect change in database")
 
-	if (cellData === "X") { var src = xImgUrl	}
-	else if (cellData === "O") { var src = oImgUrl }
+  if (cellData === "X") { var src = xImgUrl }
+  else if (cellData === "O") { var src = oImgUrl }
 
-	$(`.cell.${cellId}`).html(`<img src="${src}" class="space-taken"/>`)
+  $(`.cell.${cellId}`).html(`<img src="${src}" class="space-taken"/>`)
 }
 
 // Changes all the cell values to empty strings in database
 function resetGame() {
-	console.log('resetting game data in database')
+  console.log('resetting game data in database')
 
-	gameBoardRef.set({
-		a1: "", a2: "", a3: "",
-		b1: "", b2: "", b3: "",
-		c1: "", c2: "", c3: ""
-	})
+  gameBoardRef.set({
+    a1: "", a2: "", a3: "",
+    b1: "", b2: "", b3: "",
+    c1: "", c2: "", c3: ""
+  })
 
 	gameStateRef.set({
 		current_player: "X",
@@ -98,8 +91,8 @@ function resetGame() {
 		player_won: ""
 	})
 
-	$('.cell').html('')
-	console.log('cells reset in DOM')
+  $('.cell').html('')
+  console.log('cells reset in DOM')
 }
 
 // firebase realtime will update changes
@@ -148,30 +141,30 @@ function changePlayerLetter(currentPlayerLetter){
   console.log("changePlayerLetter function called")
 
   if(currentPlayerLetter === "X") {
-    console.log("New letter is O")
+
     let newLetter = { "current_player": "O" }
 
-    $.ajax({
-          url: gameStateUrl,
-          type: 'PATCH',
-          data: JSON.stringify(newLetter),
-          success: function(response) {
-            console.log("Patch successful?")
-          }
-        })
+    gameStateRef.update(newLetter)
+
   } else if (currentPlayerLetter === "O") {
-    console.log("New letter is X")
+
     let newLetter = { "current_player": "X" }
 
-    $.ajax({
-          url: gameStateUrl,
-          type: 'PATCH',
-          data: JSON.stringify(newLetter),
-          success: function(response) {
-            console.log("Patch successful?")
-          }
-        })
+    gameStateRef.update(newLetter)
+
   } else {
     console.log("The current_player was neither 'X' or 'O' ")
   }
 }
+
+
+// Notes
+
+// .set()   overwrite
+
+// .update()   just like patch
+
+
+// .remove()  delete stuffs
+
+//  .push()   like post dummy
