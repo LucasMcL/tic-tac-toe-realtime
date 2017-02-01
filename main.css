@@ -1,7 +1,43 @@
-.cell{
-	width: 100px;
-	height: 100px;
-	display: inline-block;
-	border: solid black 1px;
+/*********************
+ ** Game Board
+ *********************/
+
+.game-container {
+	width: 600px;
 }
+
+.game-board {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.game-board img {
+	height: 100%;
+	width: 100%;
+}
+
+.cell {
+  width: 200px;
+  height: 200px;
+  border: 6px solid #222;
+}
+
+td:first-of-type {
+  border-left-color: transparent;
+  border-top-color: transparent;
+}
+
+td:nth-of-type(2) {
+  border-top-color: transparent;
+}
+
+td:nth-of-type(3) {
+  border-right-color: transparent;
+  border-top-color: transparent;
+}
+
+tr:nth-of-type(3) td {
+  border-bottom-color: transparent;
+}
+
 
