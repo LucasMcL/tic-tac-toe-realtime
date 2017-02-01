@@ -115,7 +115,7 @@ function checkForWin(){
 function onGameOver(snap) {
 	// Only proceed if it was the 'game_over' value changed
 	if(snap.key !== 'game_over') return
-	if(snap.val !== true) return // exit if game being reset
+	if(snap.val() !== true) return // exit if game being reset
 	console.log('onGameOver function called')
 
 	$('#game-over-modal').modal()
