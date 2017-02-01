@@ -20,6 +20,7 @@ const gameStateRef = firebase.database().ref('gamestate')
 gameBoardRef.on('child_changed', onGameStateChange) //X or O added to game board
 gameStateRef.on('child_changed', onGameOver) // when game is over
 $('.reset-game').click(resetGame)
+$(document).ready(loadInitialGameBoard)
 
 // add event listener on cells
 // Things that happen on click:
@@ -106,12 +107,6 @@ function resetGame() {
 
 // update cell with current players letter
 
-
-// create function to check if a player has won
-function checkForWin(){
-  console.log("checkForWin function called")
-}
-
 // Function called when the game is over
 // Displays a modal to all users
 function onGameOver(snap) {
@@ -120,9 +115,29 @@ function onGameOver(snap) {
 	if(!snap.val()) return // exit if game being reset
 	console.log('onGameOver function called')
 
-	$('#game-over-modal .modal-body').html(`<p>Player ${snap.val()} has won!</p>`)
-
+	if(snap.val() === 'draw') {
+		$('#game-over-modal .modal-body').html(`Draw!`)
+	} else {
+		$('#game-over-modal .modal-body').html(`<p>Player ${snap.val()} has won!</p>`)
+	}
 	$('#game-over-modal').modal()
+}
+
+// Displays board when user first loads page
+function loadInitialGameBoard() {
+	console.log("loadInitialGameBoard")
+	gameBoardRef.once('value')
+		.then(snap => snap.val())
+		.then(data => {
+			console.log("data", data)
+			for(cell_num in data) {
+				if (data[cell_num] === "X") { var src = xImgUrl }
+				else if (data[cell_num] === "O") { var src = oImgUrl }
+				else continue // skip current loop if not x or o
+
+				$(`.cell.${cell_num}`).html(`<img src="${src}" class="space-taken"/>`)
+			}
+		})
 }
 
 
