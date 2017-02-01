@@ -18,11 +18,16 @@ function checkForWin(letter){
     // check for horizontal wins
       // check top row
 
+    // update game state playerWon key:value
+          // capital 'X', 'O', "draw"
+
       console.log("currentGameBoardState", currentGameBoardState)
 
       if(currentGameBoardState.a1 === letter &&
          currentGameBoardState.a2 === letter &&
          currentGameBoardState.a3 === letter) {
+
+        gameStateRef.update({"player_won": letter})
 
         // break out of function
         return console.log(`${letter} has won!`)
