@@ -102,29 +102,17 @@ function changePlayerLetter(currentPlayerLetter){
   console.log("changePlayerLetter function called")
 
   if(currentPlayerLetter === "X") {
-    console.log("New letter is O")
+
     let newLetter = { "current_player": "O" }
 
-    $.ajax({
-          url: gameStateUrl,
-          type: 'PATCH',
-          data: JSON.stringify(newLetter),
-          success: function(response) {
-            console.log("Patch successful?")
-          }
-        })
+    gameStateRef.update(newLetter)
+
   } else if (currentPlayerLetter === "O") {
-    console.log("New letter is X")
+
     let newLetter = { "current_player": "X" }
 
-    $.ajax({
-          url: gameStateUrl,
-          type: 'PATCH',
-          data: JSON.stringify(newLetter),
-          success: function(response) {
-            console.log("Patch successful?")
-          }
-        })
+    gameStateRef.update(newLetter)
+
   } else {
     console.log("The current_player was neither 'X' or 'O' ")
   }
