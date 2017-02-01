@@ -23,9 +23,6 @@ function checkForWin(letter){
 
       console.log("currentGameBoardState", currentGameBoardState)
 
-      let gameBoardIteration = 1;
-
-
       if(currentGameBoardState.a1 === letter &&
          currentGameBoardState.a2 === letter &&
          currentGameBoardState.a3 === letter) {
@@ -108,21 +105,14 @@ function checkForWin(letter){
         return console.log(`${letter} has won!`)
       }
 
+      // Lucas is offically the king of badassery
 
-      // check every position for a letter - if there are letters in every
-      for (position in currentGameBoardState) {
-
-        // console.log("game board positon length", Object.keys(currentGameBoardState).length)
-        // console.log("for loop iteration", gameBoardIteration)
-        // console.log("equal 9 yet?")
-        // gameBoardIteration++
-
-        if(currentGameBoardState[position] && Object.keys(currentGameBoardState).length === gameBoardIteration){
-          gameStateRef.update({"player_won": "draw"})
-        }
-
-        gameBoardIteration++
+      let gameBoardFull = true
+      for(position in currentGameBoardState) {
+          if(!currentGameBoardState[position]) gameBoardFull = false
       }
+      if(gameBoardFull === true) gameStateRef.update({"player_won": "draw"})
+
 
     })
 }
