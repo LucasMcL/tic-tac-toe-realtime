@@ -24,7 +24,7 @@ gameBoardRef.on('child_changed', onGameStateChange)
 	// Data at cell# changed in firebase gameboard object
 	// Player letter updated in firebase gamestate object
 $('.cell').click(evt => {
-
+	if( $(evt.target).hasClass('space-taken') ) return
   let playerLetter;
 
   // get position of cell
@@ -63,16 +63,15 @@ $('.cell').click(evt => {
 // Event listener updates board every time data is changed in firebase
 function onGameStateChange(snap) {
 	// snap contains key/value of data just changed
-	// If the change is to reset the data, don't do anything
 	const cellData = snap.val()
 	const cellId = snap.key
-	if(!cellData) return
+	if(!cellData) return // exit if change was resetting data
 	console.log("Updating DOM to reflect change in database")
 
 	if (cellData === "X") { var src = xImgUrl	}
 	else if (cellData === "O") { var src = oImgUrl }
 
-	$(`.cell.${cellId}`).html(`<img src="${src}" />`)
+	$(`.cell.${cellId}`).html(`<img src="${src}" class="space-taken"/>`)
 }
 
 // Changes all the cell values to empty strings in database
