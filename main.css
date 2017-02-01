@@ -41,3 +41,25 @@ tr:nth-of-type(3) td {
 }
 
 
+/*********************
+ ** Message-Board
+ *********************/
+
+.message-board {
+  border: black 1px solid;
+  height: 90vh;
+}
+
+.message-header {
+  border-bottom: black 1px solid;
+  width: 100%;
+}
+
+.message-container {
+  height: 85%;
+}
+
+.message-input-text {
+  width: 100%;
+  margin-bottom: 2px;
+}
