@@ -60,16 +60,20 @@ $('.cell').click(evt => {
 
 
 // create reset gameboard function
-
+function resetGameBoard(){
+  console.log("resetGameBoard function called")
   // change gameboard to default values
 
   // maybe make x go first on default
-
+}
 
 
 
 
 // create function to check if a player has won
+function checkForWin(){
+  console.log("checkForWin function called")
+}
 
 
 
