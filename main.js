@@ -20,6 +20,7 @@ const gameStateRef = firebase.database().ref('gamestate')
 gameBoardRef.on('child_changed', onGameStateChange) //X or O added to game board
 gameStateRef.on('child_changed', onGameOver) // when game is over
 $('.reset-game').click(resetGame)
+$(document).ready(loadInitialGameBoard)
 
 // add event listener on cells
 // Things that happen on click:
@@ -120,6 +121,23 @@ function onGameOver(snap) {
 		$('#game-over-modal .modal-body').html(`<p>Player ${snap.val()} has won!</p>`)
 	}
 	$('#game-over-modal').modal()
+}
+
+// Displays board when user first loads page
+function loadInitialGameBoard() {
+	console.log("loadInitialGameBoard")
+	gameBoardRef.once('value')
+		.then(snap => snap.val())
+		.then(data => {
+			console.log("data", data)
+			for(cell_num in data) {
+				if (data[cell_num] === "X") { var src = xImgUrl }
+				else if (data[cell_num] === "O") { var src = oImgUrl }
+				else continue // skip current loop if not x or o
+
+				$(`.cell.${cell_num}`).html(`<img src="${src}" class="space-taken"/>`)
+			}
+		})
 }
 
 
