@@ -72,8 +72,6 @@ function onGameStateChange(snap) {
 	else if (cellData === "O") { var src = oImgUrl }
 
 	$(`.cell.${cellId}`).html(`<img src="${src}" />`)
-	console.log($(`.cell.${cellId}`))
-	console.log("cellId", cellId)
 }
 
 // Changes all the cell values to empty strings in database
