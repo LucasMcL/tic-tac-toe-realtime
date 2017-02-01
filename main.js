@@ -14,6 +14,7 @@ const gameBoardUrl = "https://cool-real-time-tic-tac-toe.firebaseio.com/gameboar
 const xImgUrl = "img/x.png"
 const oImgUrl = "img/o.jpg"
 const gameBoardRef = firebase.database().ref('gameboard')
+const gameStateRef = firebase.database().ref('gamestate')
 
 //Event Listeners
 gameBoardRef.on('child_changed', onGameStateChange)
