@@ -48,7 +48,7 @@ $('.cell').click(evt => {
     })
   })
 
-  // update firebase with "X" or "O" at selected position in the game?
+// update firebase with "X" or "O" at selected position in the game?
 
 // update firebase with "X" or "O" at selected position
 const gameboardRef = firebase.database().ref('gameboard')
