@@ -7,15 +7,21 @@ firebase.initializeApp({
   messagingSenderId: "408081498564"
 });
 
+//Constants
 const currentPlayerUrl = "https://cool-real-time-tic-tac-toe.firebaseio.com/gamestate/current_player.json"
 const gameStateUrl = "https://cool-real-time-tic-tac-toe.firebaseio.com/gamestate.json"
 const gameBoardUrl = "https://cool-real-time-tic-tac-toe.firebaseio.com/gameboard.json"
+const xImgUrl = "/img/x.png"
+const oImgUrl = "/img/o.jpg"
+const gameBoardRef = firebase.database().ref('gameboard')
+
+//Event Listeners
+gameBoardRef.on('child_changed', onGameStateChange)
 
 // add event listener on cells
 // Things that happen on click:
 	// Data at cell# changed in firebase gameboard object
 	// Player letter updated in firebase gamestate object
-
 $('.cell').click(evt => {
 
   let playerLetter;
@@ -47,40 +53,49 @@ $('.cell').click(evt => {
       changePlayerLetter(playerLetter)
     })
   })
+})
 
 // update firebase with "X" or "O" at selected position in the game?
 
 // update firebase with "X" or "O" at selected position
-const gameboardRef = firebase.database().ref('gameboard')
-gameboardRef.on('child_changed', onGameStateChange)
 
 // Event listener updates board every time data is changed in firebase
 function onGameStateChange(snap) {
+	// snap contains key/value of data just changed
+	// If the change is to reset the data, don't do anything
 	const cellData = snap.val()
 	const cellId = snap.key
-	console.log("game data updated")
+	if(!cellData) return
+	console.log("Updating DOM to reflect change in database")
 
-	$(`.cell.${cellId}`).text(cellData)
+	if (cellData === "X") { var src = xImgUrl	}
+	else if (cellData === "O") { var src = oImgUrl }
+
+	$(`.cell.${cellId}`).html(`<img src="${src}" />`)
 	console.log($(`.cell.${cellId}`))
 	console.log("cellId", cellId)
 }
 
-  // firebase realtime will update changes
+// Changes all the cell values to empty strings in database
+function resetGameData() {
+	console.log('resetting game data in database')
+
+	gameBoardRef.set({
+		a1: "", a2: "", a3: "",
+		b1: "", b2: "", b3: "",
+		c1: "", c2: "", c3: ""
+	})
 
 
-  // update cell with current players letter
 
-})
-
-
-
-// create reset gameboard function
-function resetGameBoard(){
-  console.log("resetGameBoard function called")
-  // change gameboard to default values
-
-  // maybe make x go first on default
+	$('.cell').html('')
+	console.log('cells reset in DOM')
 }
+
+// firebase realtime will update changes
+
+
+// update cell with current players letter
 
 
 // create function to check if a player has won

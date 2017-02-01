@@ -22,12 +22,6 @@
   border: 6px solid #222;
 }
 
-/*.cell:after {
-  content: '';
-  display: block;
-  margin-top: 100%;
-}*/
-
 td:first-of-type {
   border-left-color: transparent;
   border-top-color: transparent;
