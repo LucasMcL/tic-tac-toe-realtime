@@ -122,7 +122,6 @@ function loadInitialGameBoard() {
 	gameBoardRef.once('value')
 		.then(snap => snap.val())
 		.then(data => {
-			console.log("data", data)
 			for(cell_num in data) {
 				if (data[cell_num] === "X") { var src = xImgUrl }
 				else if (data[cell_num] === "O") { var src = oImgUrl }
