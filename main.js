@@ -160,7 +160,7 @@ function changePlayerLetter(currentPlayerLetter){
 }
 
 
-// Notes
+// Notes For Westley - I suffer from KRS, aka "Kant Remember Shit"
 
 // .set()   overwrite
 

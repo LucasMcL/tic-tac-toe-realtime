@@ -3,20 +3,31 @@ console.log("checkForWin.js loaded")
 function checkForWin(letter){
   console.log("checkForWin function called")
 
-  let currentGameBoardState;
+  // let currentGameBoardState;
 
-  $.when($.get(gameBoardUrl, data => {
-    currentGameBoardState = data
-    // console.log(currentGameBoardState)
-  }))
+  // $.when($.get(gameBoardUrl, data => {
+  //   currentGameBoardState = data
+  //   // console.log(currentGameBoardState)
+  // }))
 
-    .then(() => {
+  // use firebase real time to get board information
+  gameBoardRef.once('value')
+    .then((snapshot) => snapshot.val())
+
+    .then((currentGameBoardState) => {
     // check for horizontal wins
       // check top row
+
+    // update game state playerWon key:value
+          // capital 'X', 'O', "draw"
+
+      console.log("currentGameBoardState", currentGameBoardState)
 
       if(currentGameBoardState.a1 === letter &&
          currentGameBoardState.a2 === letter &&
          currentGameBoardState.a3 === letter) {
+
+        gameStateRef.update({"player_won": letter})
 
         // break out of function
         return console.log(`${letter} has won!`)
@@ -26,6 +37,8 @@ function checkForWin(letter){
          currentGameBoardState.b2 === letter &&
          currentGameBoardState.b3 === letter) {
 
+        gameStateRef.update({"player_won": letter})
+
         // break out of function
         return console.log(`${letter} has won!`)
       }
@@ -33,6 +46,8 @@ function checkForWin(letter){
       if(currentGameBoardState.c1 === letter &&
          currentGameBoardState.c2 === letter &&
          currentGameBoardState.c3 === letter) {
+
+        gameStateRef.update({"player_won": letter})
 
         // break out of function
         return console.log(`${letter} has won!`)
@@ -43,6 +58,8 @@ function checkForWin(letter){
          currentGameBoardState.b1 === letter &&
          currentGameBoardState.c1 === letter) {
 
+        gameStateRef.update({"player_won": letter})
+
         // break out of function
         return console.log(`${letter} has won!`)
       }
@@ -51,6 +68,8 @@ function checkForWin(letter){
          currentGameBoardState.b2 === letter &&
          currentGameBoardState.c2 === letter) {
 
+        gameStateRef.update({"player_won": letter})
+
         // break out of function
         return console.log(`${letter} has won!`)
       }
@@ -58,6 +77,8 @@ function checkForWin(letter){
       if(currentGameBoardState.a3 === letter &&
          currentGameBoardState.b3 === letter &&
          currentGameBoardState.c3 === letter) {
+
+        gameStateRef.update({"player_won": letter})
 
         // break out of function
         return console.log(`${letter} has won!`)
@@ -68,6 +89,8 @@ function checkForWin(letter){
          currentGameBoardState.b2 === letter &&
          currentGameBoardState.c3 === letter) {
 
+        gameStateRef.update({"player_won": letter})
+
         // break out of function
         return console.log(`${letter} has won!`)
       }
@@ -76,8 +99,20 @@ function checkForWin(letter){
          currentGameBoardState.b2 === letter &&
          currentGameBoardState.c1 === letter) {
 
+        gameStateRef.update({"player_won": letter})
+
         // break out of function
         return console.log(`${letter} has won!`)
       }
+
+      // Lucas is offically the king of badassery
+
+      let gameBoardFull = true
+      for(position in currentGameBoardState) {
+          if(!currentGameBoardState[position]) gameBoardFull = false
+      }
+      if(gameBoardFull === true) gameStateRef.update({"player_won": "draw"})
+
+
     })
 }
