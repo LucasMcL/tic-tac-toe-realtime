@@ -1,3 +1,5 @@
+console.log('main.js loaded')
+
 // Initialize Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyAKwiAe0DV9z5EdUMUKQVc5weewhlQHqsg",
@@ -15,13 +17,13 @@ const xImgUrl = "img/x.png"
 const oImgUrl = "img/o.jpg"
 const gameBoardRef = firebase.database().ref('gameboard')
 const gameStateRef = firebase.database().ref('gamestate')
+const activeUsersRef = firebase.database().ref('activeUsers')
 
 //Event Listeners
 gameBoardRef.on('child_changed', onGameStateChange) //X or O added to game board
 gameStateRef.on('child_changed', onGameOver) // when game is over
 $('.reset-game').click(resetGame)
 $(document).ready(() => {
-	triggerSignInModal()
 	loadInitialGameBoard()
 })
 
