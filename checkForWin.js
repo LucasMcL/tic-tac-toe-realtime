@@ -3,16 +3,22 @@ console.log("checkForWin.js loaded")
 function checkForWin(letter){
   console.log("checkForWin function called")
 
-  let currentGameBoardState;
+  // let currentGameBoardState;
 
-  $.when($.get(gameBoardUrl, data => {
-    currentGameBoardState = data
-    // console.log(currentGameBoardState)
-  }))
+  // $.when($.get(gameBoardUrl, data => {
+  //   currentGameBoardState = data
+  //   // console.log(currentGameBoardState)
+  // }))
 
-    .then(() => {
+  // use firebase real time to get board information
+  gameBoardRef.once('value')
+    .then((snapshot) => snapshot.val())
+
+    .then((currentGameBoardState) => {
     // check for horizontal wins
       // check top row
+
+      console.log("currentGameBoardState", currentGameBoardState)
 
       if(currentGameBoardState.a1 === letter &&
          currentGameBoardState.a2 === letter &&
