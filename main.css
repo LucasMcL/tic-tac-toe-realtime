@@ -1,32 +1,25 @@
-/*.cell{
-	width: 100px;
-	height: 100px;
-	display: inline-block;
-	border: solid black 1px;
+/*********************
+ ** Game Board
+ *********************/
+
+.game-container {
+	max-width: 500px;
 }
 
-*/
-
-table {
+.game-board {
   width: 100%;
-}
-
-td {
-  width: 33.333%;
-}
-
-td:after {
-  content: '';
-  display: block;
-  margin-top: 100%;
-}
-
-table {
   border-collapse: collapse;
 }
 
-td {
+.cell {
+  width: 33.333%;
   border: 6px solid #222;
+}
+
+.cell:after {
+  content: '';
+  display: block;
+  margin-top: 100%;
 }
 
 td:first-of-type {
