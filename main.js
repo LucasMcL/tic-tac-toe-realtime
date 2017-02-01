@@ -77,7 +77,7 @@ function onGameStateChange(snap) {
 }
 
 // Changes all the cell values to empty strings in database
-function resetGameData() {
+function resetGame() {
 	console.log('resetting game data in database')
 
 	gameBoardRef.set({
