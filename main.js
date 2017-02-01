@@ -84,7 +84,7 @@ function resetGame() {
 		c1: "", c2: "", c3: ""
 	})
 
-
+	gameStateRef.set({current_player: "X"})
 
 	$('.cell').html('')
 	console.log('cells reset in DOM')
