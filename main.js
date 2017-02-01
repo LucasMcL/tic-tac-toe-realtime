@@ -17,7 +17,8 @@ const gameBoardRef = firebase.database().ref('gameboard')
 const gameStateRef = firebase.database().ref('gamestate')
 
 //Event Listeners
-gameBoardRef.on('child_changed', onGameStateChange)
+gameBoardRef.on('child_changed', onGameStateChange) //X or O added to game board
+gameStateRef.on('child_changed', onGameOver) // when game is over
 
 // add event listener on cells
 // Things that happen on click:
@@ -84,7 +85,7 @@ function resetGame() {
 		c1: "", c2: "", c3: ""
 	})
 
-	gameStateRef.set({current_player: "X"})
+	gameStateRef.update({current_player: "X"})
 
 	$('.cell').html('')
 	console.log('cells reset in DOM')
@@ -99,6 +100,14 @@ function resetGame() {
 // create function to check if a player has won
 function checkForWin(){
   console.log("checkForWin function called")
+}
+
+// Function called when the game is over
+// Displays a modal to all users
+function onGameOver(snap) {
+	// Only proceed if it was the 'game_over' value changed
+	if(snap.key !== 'game_over') return
+	console.log('onGameOver function called')
 }
 
 
