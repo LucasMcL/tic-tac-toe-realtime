@@ -106,12 +106,6 @@ function resetGame() {
 
 // update cell with current players letter
 
-
-// create function to check if a player has won
-function checkForWin(){
-  console.log("checkForWin function called")
-}
-
 // Function called when the game is over
 // Displays a modal to all users
 function onGameOver(snap) {
@@ -120,8 +114,11 @@ function onGameOver(snap) {
 	if(!snap.val()) return // exit if game being reset
 	console.log('onGameOver function called')
 
-	$('#game-over-modal .modal-body').html(`<p>Player ${snap.val()} has won!</p>`)
-
+	if(snap.val() === 'draw') {
+		$('#game-over-modal .modal-body').html(`Draw!`)
+	} else {
+		$('#game-over-modal .modal-body').html(`<p>Player ${snap.val()} has won!</p>`)
+	}
 	$('#game-over-modal').modal()
 }
 
