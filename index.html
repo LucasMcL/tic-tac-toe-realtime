@@ -33,6 +33,7 @@
 	</table>
 </div>
 
+
 <div class="message-board col-md-3">
 
 	<div class="message-header">Message Board</div>
@@ -47,7 +48,7 @@
 
 </div>
 
-<!-- Modal template -->
+
 <div class="modal fade" tabindex="-1" role="dialog" id="game-over-modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -63,12 +64,33 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!-- Sign in modal template -->
+<div class="modal fade" tabindex="-1" role="dialog" id="sign-in-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Welcome!</h4>
+      </div>
+      <div class="modal-body">
+      	<form>
+	      	<label for="user_name">Please enter your name: </label>
+      		<input type="text" name="user_name" placeholder="name" required>
+      		<input type="submit" name="submit" class="btn btn-primary pull-right" value="Play!">
+      	</form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- packages -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/firebase/firebase.js"></script>
 
+<!-- our scripts -->
 <script src="checkForWin.js"></script>
 <script src="messages.js"></script>
 <script src="main.js"></script>
+<script src="playerAuth.js"></script>
 </body>
 </html>
