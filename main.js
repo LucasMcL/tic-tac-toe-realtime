@@ -31,33 +31,40 @@ messagesRef.limitToLast(10).on('child_added', onMessageChange) // when new messa
   // Data at cell# changed in firebase gameboard object
   // Player letter updated in firebase gamestate object
 $('.cell').click(evt => {
-  if( $(evt.target).hasClass('space-taken') ) return
-  let playerLetter;
 
-  // get position of cell
-  let position = $(evt.target).data('target')
+  if(checkUserGameplay()){
+    console.log("check user gamepaly returned true")
 
-  // get current player turn
-  currentPlayerRef.once('value')
-    .then(snap => playerLetter = snap.val())
-    .then(data => {
-      // console.log('playerLetter', playerLetter)
+     if( $(evt.target).hasClass('space-taken') ) return
+        let playerLetter;
 
-      // Make object to patch - Lucas, I'm an idiot.  I forgot you had to make keys with variables like this
-      let changeLetterPatch = {}
-      changeLetterPatch[position] = playerLetter;
+        // get position of cell
+        let position = $(evt.target).data('target')
 
-      // Make change on gameboard in firebase
-      gameBoardRef.update(changeLetterPatch) // ES6 way is too crazy
-    })
-    .then(()=> {
-      checkForWin(playerLetter)
-    })
+        // get current player turn
+        currentPlayerRef.once('value')
+          .then(snap => playerLetter = snap.val())
+          .then(data => {
+            // console.log('playerLetter', playerLetter)
 
-    // Change the current players letter in firebase, if no one won.
-    .then(data => {
-      changePlayerLetter(playerLetter)
-    })
+            // Make object to patch - Lucas, I'm an idiot.  I forgot you had to make keys with variables like this
+            let changeLetterPatch = {}
+            changeLetterPatch[position] = playerLetter;
+
+            // Make change on gameboard in firebase
+            gameBoardRef.update(changeLetterPatch) // ES6 way is too crazy
+          })
+          .then(()=> {
+            checkForWin(playerLetter)
+          })
+
+          // Change the current players letter in firebase, if no one won.
+          .then(data => {
+            changePlayerLetter(playerLetter)
+          })
+        } else {
+          console.log("check user gameplay returned false, you are not a current player")
+        }
 })
 
 // update firebase with "X" or "O" at selected position in the game?
