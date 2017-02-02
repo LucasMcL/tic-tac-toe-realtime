@@ -24,7 +24,6 @@ const messagesRef = firebase.database().ref('messages')
 gameBoardRef.on('child_changed', onGameStateChange) //X or O added to game board
 gameStateRef.on('child_changed', onGameOver) // when game is over
 messagesRef.limitToLast(10).on('child_added', onMessageChange) // when new message is added to firebase
-$('.reset-game').click(resetGame)
 
 // add event listener on cells
 // Things that happen on click:
@@ -92,7 +91,6 @@ function resetGame() {
 
 	gameStateRef.set({
 		current_player: "X",
-		game_over: false,
 		player_won: ""
 	})
 
@@ -118,6 +116,7 @@ function onGameOver(snap) {
 	} else {
 		$('#game-over-modal .modal-body').html(`<p>Player ${snap.val()} has won!</p>`)
 	}
+	resetGame()
 	$('#game-over-modal').modal()
 }
 

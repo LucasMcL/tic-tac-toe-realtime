@@ -17,6 +17,7 @@ firebase.auth().onAuthStateChanged((user) => {
 			.then((snap) => {
 				console.log('user added in our database')
 				const post_id = snap.key
+				// add disconnect event listener to that user obj in our database
 				const userRef = firebase.database().ref(`activeUsers/${post_id}`)
 				userRef.onDisconnect().remove()
 			})
@@ -59,11 +60,5 @@ function onUserRemoved(snap) {
 	uid = snap.val().uid
 	$(`#${uid}`).remove()
 }
-
-// Reference this later
-
-// var userRef = firebase.database().ref("disconnectmessage");
-// // Write a string when this client loses connection
-// presenceRef.onDisconnect().set("I disconnected!");
 
 
