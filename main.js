@@ -143,7 +143,8 @@ function loadInitialGameState() {
 		.then(snap => snap.val())
 		.then(activeUsers => {
 			Object.values(activeUsers).forEach((user) => {
-				$('.user-container').append(`<p>${user.displayName}</p>`)
+				$('.user-container')
+					.append(`<p data-uid=${user.uid}>${user.displayName}</p>`)
 			})
 		})
 }
