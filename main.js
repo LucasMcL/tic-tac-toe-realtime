@@ -122,8 +122,10 @@ function onGameOver(snap) {
 }
 
 // Displays board when user first loads page
-function loadInitialGameBoard() {
-	console.log("loadInitialGameBoard")
+function loadInitialGameState() {
+	console.log("loadInitialGameState")
+
+	// Load Xs and Os on board
 	gameBoardRef.once('value')
 		.then(snap => snap.val())
 		.then(data => {
@@ -134,6 +136,15 @@ function loadInitialGameBoard() {
 
 				$(`.cell.${cell_num}`).html(`<img src="${src}" class="space-taken"/>`)
 			}
+		})
+
+	// Load list of users
+	activeUsersRef.once('value')
+		.then(snap => snap.val())
+		.then(activeUsers => {
+			Object.values(activeUsers).forEach((user) => {
+				$('.user-container').append(`<p>${user.displayName}</p>`)
+			})
 		})
 }
 

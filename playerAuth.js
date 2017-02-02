@@ -21,7 +21,7 @@ firebase.auth().onAuthStateChanged((user) => {
 
 		// Hide modal, load board
 		$('#sign-in-modal').modal('hide')
-		loadInitialGameBoard()
+		loadInitialGameState()
 	}
 	else {
 		// If no user signed in
