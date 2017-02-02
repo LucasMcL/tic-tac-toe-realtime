@@ -64,18 +64,24 @@ tr:nth-of-type(3) td {
   margin-bottom: 2px;
 }
 
+
 /*********************
- ** Active Users
+ ** User-List
  *********************/
 
 .user-list {
-	border: black 1px solid;
-	min-height: 10vh;
+  border: black 1px solid;
+  height: 90vh;
+  margin-left: 2px;
 }
 
 .user-header {
   border-bottom: black 1px solid;
   width: 100%;
+}
+
+.user-container {
+  height: 85%;
 }
 
 

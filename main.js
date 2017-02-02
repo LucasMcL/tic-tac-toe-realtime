@@ -24,6 +24,7 @@ const messagesRef = firebase.database().ref('messages')
 gameBoardRef.on('child_changed', onGameStateChange) //X or O added to game board
 gameStateRef.on('child_changed', onGameOver) // when game is over
 messagesRef.limitToLast(10).on('child_added', onMessageChange) // when new message is added to firebase
+activeUsersRef.on('child_added', onActiveUsersChange)
 $('.reset-game').click(resetGame)
 
 // add event listener on cells
