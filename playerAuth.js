@@ -81,6 +81,8 @@ function reorderPlayers() {
 	activeUsersRef.once('value')
 		.then(snap => snap.val())
 		.then(users => {
+
+			// if(firebase.auth().currentUser.uid === )
 			console.log('deleting users and readding')
 			const player1_postId = Object.keys(users)[0]
 			const player2_postId = Object.keys(users)[1]

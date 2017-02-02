@@ -93,7 +93,7 @@ function resetGame() {
     c1: "", c2: "", c3: ""
   })
 
-	gameStateRef.set({
+	gameStateRef.update({
 		current_player: "X",
 		player_won: ""
 	})
@@ -101,7 +101,11 @@ function resetGame() {
   $('.cell').html('')
   console.log('cells reset in DOM')
 
-  reorderPlayers()
+  gameStateRef.once('value')
+  	.then(snap => snap.val())
+  	.then(data => {
+  		console.log("data", data)
+  	})
 }
 
 // firebase realtime will update changes
