@@ -17,6 +17,7 @@ const xImgUrl = "img/x.png"
 const oImgUrl = "img/o.jpg"
 const gameBoardRef = firebase.database().ref('gameboard')
 const gameStateRef = firebase.database().ref('gamestate')
+const currentPlayerRef = firebase.database().ref('gamestate/current_player')
 const activeUsersRef = firebase.database().ref('activeUsers')
 const messagesRef = firebase.database().ref('messages')
 
@@ -37,9 +38,10 @@ $('.cell').click(evt => {
   let position = $(evt.target).data('target')
 
   // get current player turn
-  // NOTE: this needs to be changed to firebase real time!!!!
-  $.when($.get(currentPlayerUrl, data => playerLetter = data))
+  currentPlayerRef.once('value')
+    .then(snap => playerLetter = snap.val())
     .then(data => {
+      // console.log('playerLetter', playerLetter)
 
       // Make object to patch - Lucas, I'm an idiot.  I forgot you had to make keys with variables like this
       let changeLetterPatch = {}
@@ -47,8 +49,7 @@ $('.cell').click(evt => {
 
       // Make change on gameboard in firebase
       gameBoardRef.update(changeLetterPatch) // ES6 way is too crazy
-
-    // Check for wins.
+    })
     .then(()=> {
       checkForWin(playerLetter)
     })
@@ -57,8 +58,6 @@ $('.cell').click(evt => {
     .then(data => {
       changePlayerLetter(playerLetter)
     })
-
-  })
 })
 
 // update firebase with "X" or "O" at selected position in the game?
