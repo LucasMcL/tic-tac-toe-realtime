@@ -93,15 +93,19 @@ function resetGame() {
     c1: "", c2: "", c3: ""
   })
 
-	gameStateRef.set({
+	gameStateRef.update({
 		current_player: "X",
-		player_won: "",
-		// player1: "lbZmJzqpLUcJPQHTeU0cvtA1lQu2",
-		// player2: "JYx0LtE3d7WXMnTSSmX26gZBkxH2"
+		player_won: ""
 	})
 
   $('.cell').html('')
   console.log('cells reset in DOM')
+
+  gameStateRef.once('value')
+  	.then(snap => snap.val())
+  	.then(data => {
+  		console.log("data", data)
+  	})
 }
 
 // firebase realtime will update changes
@@ -122,6 +126,7 @@ function onGameOver(snap) {
 	} else {
 		$('#game-over-modal .modal-body').html(`<p>Player ${snap.val()} has won!</p>`)
 	}
+
 	resetGame()
 	$('#game-over-modal').modal()
 }
