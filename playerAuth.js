@@ -4,6 +4,13 @@ console.log('playerAuth.js loaded')
 $('#sign-in-modal form').submit(createUser)
 activeUsersRef.on('child_added', onUserAdded)
 activeUsersRef.on('child_removed', onUserRemoved)
+// activeUsersRef.on('value', onActiveUsersChanged)
+
+function onActiveUsersChanged (snap) {
+	// const users = snap.val()
+	// console.log(snap, users)
+	snap.forEach(user => console.log(user))
+}
 
 firebase.auth().onAuthStateChanged((user) => {
 	if(user) {
@@ -50,6 +57,7 @@ function createUser(submitEvt) {
 // Called from event listener that listens for child added to userList
 function onUserAdded(snap) {
 	user = snap.val()
+	console.log("user that was added: ", user)
 	$('.user-container')
 		.append(`<p id=${user.uid}>${user.displayName}</p>`)
 }

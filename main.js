@@ -91,7 +91,9 @@ function resetGame() {
 
 	gameStateRef.set({
 		current_player: "X",
-		player_won: ""
+		player_won: "",
+		player1: "TYyv4OXYeWQZo6LtflbTj41CVMw2",
+		player2: "lbZmJzqpLUcJPQHTeU0cvtA1lQu2"
 	})
 
   $('.cell').html('')
