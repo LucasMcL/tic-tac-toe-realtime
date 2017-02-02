@@ -77,27 +77,22 @@ function onActiveUsersChanged(snap) {
 	})
 }
 
-function reorderPlayers() {
-	activeUsersRef.once('value')
-		.then(snap => snap.val())
+
+function findAndMovePlayer(uid) {
+	let post_id
+	let users
+	activeUsersRef.orderByChild('uid').equalTo(uid).once('value')
+		.then(snap => {
+			users = snap.val()
+			return users
+		})
 		.then(users => {
-
-			// if(firebase.auth().currentUser.uid === )
-			console.log('deleting users and readding')
-			const player1_postId = Object.keys(users)[0]
-			const player2_postId = Object.keys(users)[1]
-			const player1_Obj = users[player1_postId]
-			const player2_Obj = users[player2_postId]
-
-			activeUsersRef.child(player1_postId).remove()
-			activeUsersRef.child(player2_postId).remove()
-			activeUsersRef.push(player1_Obj)
-				.then(() => console.log('player 1 re added'))
-			activeUsersRef.push(player2_Obj)
-				.then(() => console.log('player 2 re added'))
+			post_id = Object.keys(users)[0]
+			user = users[post_id]
+			firebase.database().ref(`activeUsers/${post_id}`).remove()
+			activeUsersRef.push(user)
 		})
 }
-
 
 
 

@@ -138,10 +138,22 @@ function resetGame() {
   $('.cell').html('')
   console.log('cells reset in DOM')
 
+  let player1_uid
+  let player2_uid
+  let currentUserUid
   gameStateRef.once('value')
   	.then(snap => snap.val())
   	.then(data => {
-  		console.log("data", data)
+  		// Get player 1 and player 2 uids
+  		player1_uid = data.player1
+  		player2_uid = data.player2
+  		currentUserUid = firebase.auth().currentUser.uid
+  	})
+  	.then(() => {
+  		//If current user just completed game as player 1 or two, find and move them
+  		if (currentUserUid === player1_uid || currentUserUid === player2_uid) {
+  			findAndMovePlayer(currentUserUid)
+  		}
   	})
 }
 
