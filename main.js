@@ -138,15 +138,8 @@ function loadInitialGameState() {
 			}
 		})
 
-	// Load list of users
-	activeUsersRef.once('value')
-		.then(snap => snap.val())
-		.then(activeUsers => {
-			Object.values(activeUsers).forEach((user) => {
-				$('.user-container')
-					.append(`<p data-uid=${user.uid}>${user.displayName}</p>`)
-			})
-		})
+	// Loads in list of users initially, then updates when added to
+	activeUsersRef.on('child_added', onUserAdded)
 }
 
 

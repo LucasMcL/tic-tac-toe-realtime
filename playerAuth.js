@@ -2,6 +2,8 @@ console.log('playerAuth.js loaded')
 
 // Event listeners
 $('#sign-in-modal form').submit(createUser)
+activeUsersRef.on('child_removed', onUserRemoved)
+
 
 firebase.auth().onAuthStateChanged((user) => {
 	if(user) {
@@ -19,7 +21,7 @@ firebase.auth().onAuthStateChanged((user) => {
 				userRef.onDisconnect().remove()
 			})
 
-		// Hide modal, load board
+		// Hide modal, load board and users
 		$('#sign-in-modal').modal('hide')
 		loadInitialGameState()
 	}
@@ -42,6 +44,21 @@ function createUser(submitEvt) {
 			// If user leaves and comes back, it will remember
 			user.updateProfile({ displayName })
 		})
+}
+
+// Called from event listener that listens for child added to userList
+function onUserAdded(snap) {
+	user = snap.val()
+	$('.user-container')
+		.append(`<p id=${user.uid}>${user.displayName}</p>`)
+}
+
+// Called from event listener that listens for child removed to userList
+function onUserRemoved(snap) {
+	console.log("onUserRemoved function fired")
+	uid = snap.val().uid
+
+	$(`#${uid}`).remove()
 }
 
 // Reference this later
