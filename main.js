@@ -101,10 +101,20 @@ function resetGame() {
   $('.cell').html('')
   console.log('cells reset in DOM')
 
+  let player1_uid
+  let player2_uid
+  let current_uid
   gameStateRef.once('value')
   	.then(snap => snap.val())
   	.then(data => {
-  		console.log("data", data)
+  		player1_uid = data.player1
+  		player2_uid = data.player2
+  		current_uid = firebase.auth().currentUser.uid
+  	})
+  	.then(() => {
+  		if (current_uid === player1_uid || current_uid === player2_uid) {
+
+  		}
   	})
 }
 
