@@ -25,9 +25,6 @@ gameBoardRef.on('child_changed', onGameStateChange) //X or O added to game board
 gameStateRef.on('child_changed', onGameOver) // when game is over
 messagesRef.limitToLast(10).on('child_added', onMessageChange) // when new message is added to firebase
 $('.reset-game').click(resetGame)
-$(document).ready(() => {
-	loadInitialGameBoard()
-})
 
 // add event listener on cells
 // Things that happen on click:
@@ -125,8 +122,10 @@ function onGameOver(snap) {
 }
 
 // Displays board when user first loads page
-function loadInitialGameBoard() {
-	console.log("loadInitialGameBoard")
+function loadInitialGameState() {
+	console.log("loadInitialGameState")
+
+	// Load Xs and Os on board
 	gameBoardRef.once('value')
 		.then(snap => snap.val())
 		.then(data => {
@@ -138,6 +137,9 @@ function loadInitialGameBoard() {
 				$(`.cell.${cell_num}`).html(`<img src="${src}" class="space-taken"/>`)
 			}
 		})
+
+	// Loads in list of users initially, then updates when added to
+	activeUsersRef.on('child_added', onUserAdded)
 }
 
 
