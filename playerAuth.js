@@ -106,9 +106,6 @@ function reorderPlayers() {
 
 
 function checkUserGameplay(){
-	// grab logged in users uid
-  const userId = firebase.auth().currentUser.uid
-  // console.log("userId", userId)
 
   // grab current player uids
   gameStateRef.once('value')
@@ -116,17 +113,27 @@ function checkUserGameplay(){
   	.then((gameStateObject)=>{
   		// console.log("gameStateObject", gameStateObject)
 
+  		// grab logged in users uid
+		  const userId = firebase.auth().currentUser.uid
+		  console.log("userId", userId)
+
   		let playerOne = gameStateObject.player1
   		let playerTwo = gameStateObject.player2
 
-  		// console.log("playerOne", playerOne)
-  		// console.log("playerTwo", playerTwo)
+  		console.log("playerOne", playerOne)
+  		console.log("playerTwo", playerTwo)
 
-  		if (userId === playerOne || userId === playerTwo){
-  			// console.log("true")
+  		if(userId === playerOne) console.log("user id and playerOne are the same")
+			if(userId === playerTwo) console.log("user id and playerTwo are the same")
+
+  		if (userId === playerOne){
+  			console.log("player one true")
+  			return true
+  		} else if (userId === playerTwo) {
+  			console.log("player two true")
   			return true
   		} else {
-  			// console.log("false")
+  			console.log("false")
   			return false
   		}
   	})
