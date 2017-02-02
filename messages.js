@@ -5,7 +5,7 @@ messageForm.on('submit', addNewMessage)
 
 
 function onMessageChange(snapshot){
-  console.log("onMessageChange function called")
+  // console.log("onMessageChange function called")
 
   const message = snapshot.val()
 
@@ -31,7 +31,7 @@ function onMessageChange(snapshot){
 
 function addNewMessage(event){
   event.preventDefault()
-  console.log("addNewMessage function called")
+  // console.log("addNewMessage function called")
 
   const newMessage = $('.message-input-text')
 
