@@ -2,8 +2,8 @@ console.log('playerAuth.js loaded')
 
 // Event listeners
 $('#sign-in-modal form').submit(createUser)
+activeUsersRef.on('child_added', onUserAdded)
 activeUsersRef.on('child_removed', onUserRemoved)
-
 
 firebase.auth().onAuthStateChanged((user) => {
 	if(user) {
@@ -57,7 +57,6 @@ function onUserAdded(snap) {
 function onUserRemoved(snap) {
 	console.log("onUserRemoved function fired")
 	uid = snap.val().uid
-
 	$(`#${uid}`).remove()
 }
 

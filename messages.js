@@ -37,7 +37,7 @@ function onMessageChange(snapshot){
 
     const userInfo = snapshot.val()
 
-    messageDiv.append(`<p id=${messageKey}>${userInfo.display_name}: ${message}</p>`)
+    messageDiv.append(`<p id=${messageKey}>${userInfo.displayName}: ${message}</p>`)
 
     // if number of messages is greater than 10, delete them from dom and firebase
     if(messageDiv.children().length > 10){
