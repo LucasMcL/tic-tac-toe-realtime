@@ -140,17 +140,19 @@ function resetGame() {
 
   let player1_uid
   let player2_uid
-  let current_uid
+  let currentUserUid
   gameStateRef.once('value')
   	.then(snap => snap.val())
   	.then(data => {
+  		// Get player 1 and player 2 uids
   		player1_uid = data.player1
   		player2_uid = data.player2
-  		current_uid = firebase.auth().currentUser.uid
+  		currentUserUid = firebase.auth().currentUser.uid
   	})
   	.then(() => {
-  		if (current_uid === player1_uid || current_uid === player2_uid) {
-
+  		//If current user just completed game as player 1 or two, find and move them
+  		if (currentUserUid === player1_uid || currentUserUid === player2_uid) {
+  			findAndMovePlayer(currentUserUid)
   		}
   	})
 }
