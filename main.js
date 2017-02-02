@@ -32,8 +32,8 @@ messagesRef.limitToLast(10).on('child_added', onMessageChange) // when new messa
   // Player letter updated in firebase gamestate object
 $('.cell').click(evt => {
 
-  if(checkUserGameplay()){
-    console.log("check user gamepaly returned true")
+  // if(checkUserGameplay()){
+  //   console.log("check user gamepaly returned true")
 
      if( $(evt.target).hasClass('space-taken') ) return
         let playerLetter;
@@ -62,9 +62,7 @@ $('.cell').click(evt => {
           .then(data => {
             changePlayerLetter(playerLetter)
           })
-        } else {
-          console.log("check user gameplay returned false, you are not a current player")
-        }
+
 })
 
 // update firebase with "X" or "O" at selected position in the game?
