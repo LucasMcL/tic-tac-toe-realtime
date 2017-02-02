@@ -9,27 +9,47 @@
 </head>
 <body>
 
-<div class="game-container center-block">
-	<table class="game-board">
-	  <tr>
-	    <td class="cell a1" data-target="a1"></td>
-	    <td class="cell a2" data-target="a2"></td>
-	    <td class="cell a3" data-target="a3"></td>
-	  </tr>
-	  <tr>
-	    <td class="cell b1" data-target="b1"></td>
-	    <td class="cell b2" data-target="b2"></td>
-	    <td class="cell b3" data-target="b3"></td>
-	  </tr>
-	  <tr>
-	    <td class="cell c1" data-target="c1"></td>
-	    <td class="cell c2" data-target="c2"></td>
-	    <td class="cell c3" data-target="c3"></td>
-	  </tr>
-	</table>
-</div>
+<div class="app">
+	<div class="user-list">
+		<div class="user-header">Playing</div>
+	  <div class="user-container"></div>
+	</div> <!-- end .user-list -->
 
-<!-- Modal template -->
+	<div class="game-container">
+		<h1 class="text-center title">Tic Tac Toe</h1>
+		<table class="game-board">
+		  <tr>
+		    <td class="cell a1" data-target="a1"></td>
+		    <td class="cell a2" data-target="a2"></td>
+		    <td class="cell a3" data-target="a3"></td>
+		  </tr>
+		  <tr>
+		    <td class="cell b1" data-target="b1"></td>
+		    <td class="cell b2" data-target="b2"></td>
+		    <td class="cell b3" data-target="b3"></td>
+		  </tr>
+		  <tr>
+		    <td class="cell c1" data-target="c1"></td>
+		    <td class="cell c2" data-target="c2"></td>
+		    <td class="cell c3" data-target="c3"></td>
+		  </tr>
+		</table>
+	</div> <!-- end .game-container -->
+
+	<div class="message-board">
+		<div class="message-header">Message Board</div>
+		<div class="message-container"></div>
+
+		<form class="message-form">
+			<input class="message-input-text" type="text" placeholder="Message" name="content"><br>
+			<input class="message-submit-button" type="submit" value="Send Message">
+		</form>
+	</div> <!-- end .message-board -->
+</div> <!-- end .app -->
+
+
+
+
 <div class="modal fade" tabindex="-1" role="dialog" id="game-over-modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -39,17 +59,39 @@
       </div>
       <div class="modal-body"></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary reset-game" data-dismiss="modal">Play again?</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!-- Sign in modal template -->
+<div class="modal fade" tabindex="-1" role="dialog" id="sign-in-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Welcome!</h4>
+      </div>
+      <div class="modal-body">
+      	<form>
+	      	<label for="user_name">Please enter your name: </label>
+      		<input type="text" name="user_name" placeholder="name" required>
+      		<input type="submit" name="submit" class="btn btn-primary pull-right" value="Play!">
+      	</form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- packages -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/firebase/firebase.js"></script>
 
+<!-- our scripts -->
 <script src="checkForWin.js"></script>
+<script src="messages.js"></script>
 <script src="main.js"></script>
+<script src="playerAuth.js"></script>
 </body>
 </html>

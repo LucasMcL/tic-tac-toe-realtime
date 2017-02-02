@@ -1,3 +1,5 @@
+console.log('main.js loaded')
+
 // Initialize Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyAKwiAe0DV9z5EdUMUKQVc5weewhlQHqsg",
@@ -15,12 +17,13 @@ const xImgUrl = "img/x.png"
 const oImgUrl = "img/o.jpg"
 const gameBoardRef = firebase.database().ref('gameboard')
 const gameStateRef = firebase.database().ref('gamestate')
+const activeUsersRef = firebase.database().ref('activeUsers')
+const messagesRef = firebase.database().ref('messages')
 
 //Event Listeners
 gameBoardRef.on('child_changed', onGameStateChange) //X or O added to game board
 gameStateRef.on('child_changed', onGameOver) // when game is over
-$('.reset-game').click(resetGame)
-$(document).ready(loadInitialGameBoard)
+messagesRef.limitToLast(10).on('child_added', onMessageChange) // when new message is added to firebase
 
 // add event listener on cells
 // Things that happen on click:
@@ -34,6 +37,7 @@ $('.cell').click(evt => {
   let position = $(evt.target).data('target')
 
   // get current player turn
+  // NOTE: this needs to be changed to firebase real time!!!!
   $.when($.get(currentPlayerUrl, data => playerLetter = data))
     .then(data => {
 
@@ -87,8 +91,9 @@ function resetGame() {
 
 	gameStateRef.set({
 		current_player: "X",
-		game_over: false,
-		player_won: ""
+		player_won: "",
+		player1: "lbZmJzqpLUcJPQHTeU0cvtA1lQu2",
+		player2: "JYx0LtE3d7WXMnTSSmX26gZBkxH2"
 	})
 
   $('.cell').html('')
@@ -113,16 +118,18 @@ function onGameOver(snap) {
 	} else {
 		$('#game-over-modal .modal-body').html(`<p>Player ${snap.val()} has won!</p>`)
 	}
+	resetGame()
 	$('#game-over-modal').modal()
 }
 
 // Displays board when user first loads page
-function loadInitialGameBoard() {
-	console.log("loadInitialGameBoard")
+function loadInitialGameState() {
+	console.log("loadInitialGameState")
+
+	// Load Xs and Os on board
 	gameBoardRef.once('value')
 		.then(snap => snap.val())
 		.then(data => {
-			console.log("data", data)
 			for(cell_num in data) {
 				if (data[cell_num] === "X") { var src = xImgUrl }
 				else if (data[cell_num] === "O") { var src = oImgUrl }
@@ -131,6 +138,9 @@ function loadInitialGameBoard() {
 				$(`.cell.${cell_num}`).html(`<img src="${src}" class="space-taken"/>`)
 			}
 		})
+
+	// // Loads in list of users initially, then updates when added to
+	// activeUsersRef.on('child_added', onUserAdded)
 }
 
 
@@ -158,7 +168,7 @@ function changePlayerLetter(currentPlayerLetter){
 }
 
 
-// Notes
+// Notes For Westley - I suffer from KRS, aka "Kant Remember Shit"
 
 // .set()   overwrite
 
