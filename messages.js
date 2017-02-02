@@ -51,7 +51,7 @@ function addNewMessage(event){
   // get user uid
   const authorUid = firebase.auth().currentUser.uid
 
-  // get user displayName
+  // store user displayName
   let displayName
 
   // filter out user with the logged in users UID
@@ -68,6 +68,7 @@ function addNewMessage(event){
       displayName = userObject[userObjectKey].displayName
     })
 
+  // create object to push to firebase
   let newMessageObject = {
                             "message": messageContent.val(),
                             "authorUid": authorUid,

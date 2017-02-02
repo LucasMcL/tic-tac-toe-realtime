@@ -1,6 +1,6 @@
 console.log("users.js loaded")
 
-let userKey
+// let userKey
 
 // add logged in users to users div on DOM
 
