@@ -87,3 +87,29 @@ function onUserRemoved(snap) {
 }
 
 
+function checkUserGameplay(){
+	// grab logged in users uid
+  const userId = firebase.auth().currentUser.uid
+  // console.log("userId", userId)
+
+  // grab current player uids
+  gameStateRef.once('value')
+  	.then((snap)=> snap.val())
+  	.then((gameStateObject)=>{
+  		// console.log("gameStateObject", gameStateObject)
+
+  		let playerOne = gameStateObject.player1
+  		let playerTwo = gameStateObject.player2
+
+  		// console.log("playerOne", playerOne)
+  		// console.log("playerTwo", playerTwo)
+
+  		if (userId === playerOne || userId === playerTwo){
+  			// console.log("true")
+  			return true
+  		} else {
+  			// console.log("false")
+  			return false
+  		}
+  	})
+}
