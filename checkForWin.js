@@ -21,7 +21,7 @@ function checkForWin(letter){
     // update game state playerWon key:value
           // capital 'X', 'O', "draw"
 
-      console.log("currentGameBoardState", currentGameBoardState)
+      // console.log("currentGameBoardState", currentGameBoardState)
 
       if(currentGameBoardState.a1 === letter &&
          currentGameBoardState.a2 === letter &&
