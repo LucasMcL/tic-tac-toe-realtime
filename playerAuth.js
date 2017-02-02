@@ -49,12 +49,17 @@ function createUser(submitEvt) {
 		})
 }
 
+// Updates player list in DOM on change to use list
+// Will fire when user signs in
+// Will fire when user disconnects
+// Will fire when user reconnects
 function onActiveUsersChanged(snap) {
 	console.log('onActiveUsersChanged fired')
-	$('.user-container').html('')
+	$('.user-container').html('') // clear player list in DOM
 	let i = 0
 	snap.forEach(snap => {
 		const user = snap.val()
+		console.log("i", i, "user", user)
 		$('.user-container')
 			.append(`<p id=${user.uid}>${user.displayName}</p>`)
 
@@ -63,8 +68,16 @@ function onActiveUsersChanged(snap) {
 			$(`#${user.uid}`).addClass('current-user')
 		}
 
+		// Add header 'waiting' after first two players added in list
 		if(i === 1) {
 			$('.user-container').append('<div class="user-header waiting">Waiting</div>')
+		}
+
+		if(i === 0) {
+			gameStateRef.update( {"player1": user.uid} )
+		}
+		if(i === 1) {
+			gameStateRef.update( {"player2": user.uid} )
 		}
 
 		i++
