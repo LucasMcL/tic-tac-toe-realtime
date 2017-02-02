@@ -25,9 +25,6 @@ gameBoardRef.on('child_changed', onGameStateChange) //X or O added to game board
 gameStateRef.on('child_changed', onGameOver) // when game is over
 messagesRef.limitToLast(10).on('child_added', onMessageChange) // when new message is added to firebase
 $('.reset-game').click(resetGame)
-$(document).ready(() => {
-	loadInitialGameBoard()
-})
 
 // add event listener on cells
 // Things that happen on click:
