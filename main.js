@@ -32,37 +32,74 @@ messagesRef.limitToLast(10).on('child_added', onMessageChange) // when new messa
   // Player letter updated in firebase gamestate object
 $('.cell').click(evt => {
 
-  // if(checkUserGameplay()){
-  //   console.log("check user gamepaly returned true")
+  $.when(
+    gameStateRef.once('value')
+    .then((snap)=> snap.val())
+    .then((gameStateObject)=>{
+      // console.log("gameStateObject", gameStateObject)
 
-     if( $(evt.target).hasClass('space-taken') ) return
-        let playerLetter;
+      // grab logged in users uid
+      const userId = firebase.auth().currentUser.uid
+      console.log("userId", userId)
 
-        // get position of cell
-        let position = $(evt.target).data('target')
+      let playerOne = gameStateObject.player1
+      let playerTwo = gameStateObject.player2
 
-        // get current player turn
-        currentPlayerRef.once('value')
-          .then(snap => playerLetter = snap.val())
-          .then(data => {
-            // console.log('playerLetter', playerLetter)
+      console.log("playerOne", playerOne)
+      console.log("playerTwo", playerTwo)
 
-            // Make object to patch - Lucas, I'm an idiot.  I forgot you had to make keys with variables like this
-            let changeLetterPatch = {}
-            changeLetterPatch[position] = playerLetter;
+      if(userId === playerOne) console.log("user id and playerOne are the same")
+      if(userId === playerTwo) console.log("user id and playerTwo are the same")
 
-            // Make change on gameboard in firebase
-            gameBoardRef.update(changeLetterPatch) // ES6 way is too crazy
-          })
-          .then(()=> {
-            checkForWin(playerLetter)
-          })
+      if (userId === playerOne){
+        console.log("player one true")
+        return true
+      } else if (userId === playerTwo) {
+        console.log("player two true")
+        return true
+      } else {
+        console.log("false")
+        return false
+      }
+    })
+    // checkUserGameplay()
+    )
+  .then(data =>{
+      console.log("test jquery promise", data)
+      if(data){
+        console.log("check user gamepaly returned true")
 
-          // Change the current players letter in firebase, if no one won.
-          .then(data => {
-            changePlayerLetter(playerLetter)
-          })
+         if( $(evt.target).hasClass('space-taken') ) return
+            let playerLetter;
 
+            // get position of cell
+            let position = $(evt.target).data('target')
+
+            // get current player turn
+            currentPlayerRef.once('value')
+              .then(snap => playerLetter = snap.val())
+              .then(data => {
+                // console.log('playerLetter', playerLetter)
+
+                // Make object to patch - Lucas, I'm an idiot.  I forgot you had to make keys with variables like this
+                let changeLetterPatch = {}
+                changeLetterPatch[position] = playerLetter;
+
+                // Make change on gameboard in firebase
+                gameBoardRef.update(changeLetterPatch) // ES6 way is too crazy
+              })
+              .then(()=> {
+                checkForWin(playerLetter)
+              })
+
+              // Change the current players letter in firebase, if no one won.
+              .then(data => {
+                changePlayerLetter(playerLetter)
+              })
+            } else {
+              console.log("check user gameplay returned false, you are not a current player")
+            }
+    })
 })
 
 // update firebase with "X" or "O" at selected position in the game?
@@ -93,11 +130,9 @@ function resetGame() {
     c1: "", c2: "", c3: ""
   })
 
-	gameStateRef.set({
+	gameStateRef.update({
 		current_player: "X",
-		player_won: "",
-		// player1: "lbZmJzqpLUcJPQHTeU0cvtA1lQu2",
-		// player2: "JYx0LtE3d7WXMnTSSmX26gZBkxH2"
+		player_won: ""
 	})
 
   $('.cell').html('')
