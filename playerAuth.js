@@ -57,7 +57,6 @@ function onActiveUsersChanged(snap) {
 	let i = 0
 	snap.forEach(snap => {
 		const user = snap.val()
-		console.log("i", i, "user", user)
 		$('.user-container')
 			.append(`<p id=${user.uid}>${user.displayName}</p>`)
 
@@ -82,10 +81,18 @@ function reorderPlayers() {
 	activeUsersRef.once('value')
 		.then(snap => snap.val())
 		.then(users => {
-			const player1 = users[Object.keys(users)[0]]
-			const player2 = users[Object.keys(users)[1]]
+			console.log('deleting users and readding')
+			const player1_postId = Object.keys(users)[0]
+			const player2_postId = Object.keys(users)[1]
+			const player1_Obj = users[player1_postId]
+			const player2_Obj = users[player2_postId]
 
-
+			activeUsersRef.child(player1_postId).remove()
+			activeUsersRef.child(player2_postId).remove()
+			activeUsersRef.push(player1_Obj)
+				.then(() => console.log('player 1 re added'))
+			activeUsersRef.push(player2_Obj)
+				.then(() => console.log('player 2 re added'))
 		})
 }
 
