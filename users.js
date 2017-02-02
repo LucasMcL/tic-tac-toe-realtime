@@ -9,20 +9,19 @@ function onActiveUsersChange (snapshot) {
 
   const user = snapshot.val()
   // console.log(user)
-
   userKey = snapshot.getKey()
 
   const userListDiv = $('.user-container')
 
   // Do I need to add an id to this? I don't think I do
-  userListDiv.append(`<p id=${user.uid}>${user.display_name}</p>`)
+  userListDiv.append(`<p id=${user.uid}>${user.displayName}</p>`)
 }
 
 
 
-// function addActiveUsers () {
-//   console.log("addActiveUsers function called")
-// }
+function addActiveUsers () {
+  console.log("addActiveUsers function called")
+}
 
 
 
