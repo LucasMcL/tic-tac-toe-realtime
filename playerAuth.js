@@ -2,8 +2,6 @@ console.log('playerAuth.js loaded')
 
 // Event listeners
 $('#sign-in-modal form').submit(createUser)
-// activeUsersRef.on('child_added', onUserAdded)
-// activeUsersRef.on('child_removed', onUserRemoved)
 activeUsersRef.on('value', onActiveUsersChanged)
 
 
@@ -73,30 +71,28 @@ function onActiveUsersChanged(snap) {
 			$('.user-container').append('<div class="user-header waiting">Waiting</div>')
 		}
 
-		if(i === 0) {
-			gameStateRef.update( {"player1": user.uid} )
-		}
-		if(i === 1) {
-			gameStateRef.update( {"player2": user.uid} )
-		}
+		if(i === 0) gameStateRef.update( {"player1": user.uid} )
+		if(i === 1) gameStateRef.update( {"player2": user.uid} )
 
 		i++
 	})
 }
 
-// Called from event listener that listens for child added to userList
-function onUserAdded(snap) {
-	const user = snap.val()
-	console.log("user that was added: ", user)
-	$('.user-container')
-		.append(`<p id=${user.uid}>${user.displayName}</p>`)
+function reorderPlayers() {
+	activeUsersRef.once('value')
+		.then(snap => snap.val())
+		.then(users => {
+			const player1 = users[Object.keys(users)[0]]
+			const player2 = users[Object.keys(users)[1]]
+
+
+		})
 }
 
-// Called from event listener that listens for child removed to userList
-function onUserRemoved(snap) {
-	console.log("onUserRemoved function fired")
-	const uid = snap.val().uid
-	$(`#${uid}`).remove()
-}
+
+
+
+
+
 
 
