@@ -2,8 +2,6 @@ console.log('playerAuth.js loaded')
 
 // Event listeners
 $('#sign-in-modal form').submit(createUser)
-// activeUsersRef.on('child_added', onUserAdded)
-// activeUsersRef.on('child_removed', onUserRemoved)
 activeUsersRef.on('value', onActiveUsersChanged)
 
 
@@ -49,9 +47,13 @@ function createUser(submitEvt) {
 		})
 }
 
+// Updates player list in DOM on change to use list
+// Will fire when user signs in
+// Will fire when user disconnects
+// Will fire when user reconnects
 function onActiveUsersChanged(snap) {
 	console.log('onActiveUsersChanged fired')
-	$('.user-container').html('')
+	$('.user-container').html('') // clear player list in DOM
 	let i = 0
 	snap.forEach(snap => {
 		const user = snap.val()
@@ -63,28 +65,44 @@ function onActiveUsersChanged(snap) {
 			$(`#${user.uid}`).addClass('current-user')
 		}
 
+		// Add header 'waiting' after first two players added in list
 		if(i === 1) {
 			$('.user-container').append('<div class="user-header waiting">Waiting</div>')
 		}
+
+		if(i === 0) gameStateRef.update( {"player1": user.uid} )
+		if(i === 1) gameStateRef.update( {"player2": user.uid} )
 
 		i++
 	})
 }
 
-// Called from event listener that listens for child added to userList
-function onUserAdded(snap) {
-	const user = snap.val()
-	console.log("user that was added: ", user)
-	$('.user-container')
-		.append(`<p id=${user.uid}>${user.displayName}</p>`)
+function reorderPlayers() {
+	activeUsersRef.once('value')
+		.then(snap => snap.val())
+		.then(users => {
+
+			// if(firebase.auth().currentUser.uid === )
+			console.log('deleting users and readding')
+			const player1_postId = Object.keys(users)[0]
+			const player2_postId = Object.keys(users)[1]
+			const player1_Obj = users[player1_postId]
+			const player2_Obj = users[player2_postId]
+
+			activeUsersRef.child(player1_postId).remove()
+			activeUsersRef.child(player2_postId).remove()
+			activeUsersRef.push(player1_Obj)
+				.then(() => console.log('player 1 re added'))
+			activeUsersRef.push(player2_Obj)
+				.then(() => console.log('player 2 re added'))
+		})
 }
 
-// Called from event listener that listens for child removed to userList
-function onUserRemoved(snap) {
-	console.log("onUserRemoved function fired")
-	const uid = snap.val().uid
-	$(`#${uid}`).remove()
-}
+
+
+
+
+
 
 
 function checkUserGameplay(){
