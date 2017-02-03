@@ -148,7 +148,7 @@ function onGameStateChange(snap) {
       if (letter === "X"){
         console.log('It is player ones turn - game state changed')
 
-        activeUsersRef.orderByChild('uid').equalTo(player2_uid)
+        activeUsersRef.orderByChild('uid').equalTo(player1_uid)
           .once('value', (snap) => {
             console.log("check this snap", snap)
 
@@ -168,7 +168,7 @@ function onGameStateChange(snap) {
       } else if (letter === "O") {
         console.log('It is player twos turn - game state changed')
 
-        activeUsersRef.orderByChild('uid').equalTo(player1_uid)
+        activeUsersRef.orderByChild('uid').equalTo(player2_uid)
           .once('value', (snap) => {
             console.log("check this snap", snap)
 
