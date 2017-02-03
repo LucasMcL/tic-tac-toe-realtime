@@ -133,3 +133,7 @@ tr:nth-of-type(3) td {
 .turn-player {
   color: tomato;
 }
+
+.turn-letter {
+  color: skyblue;
+}
