@@ -36,25 +36,20 @@ $('.cell').click(evt => {
     gameStateRef.once('value')
     .then((snap)=> snap.val())
     .then((gameStateObject)=>{
-      // console.log("gameStateObject", gameStateObject)
 
-      // grab logged in users uid
       const userId = firebase.auth().currentUser.uid
-      console.log("userId", userId)
 
       let playerOne = gameStateObject.player1
       let playerTwo = gameStateObject.player2
-
-      console.log("playerOne", playerOne)
-      console.log("playerTwo", playerTwo)
+      let currentPlayer = gameStateObject.current_player
 
       if(userId === playerOne) console.log("user id and playerOne are the same")
       if(userId === playerTwo) console.log("user id and playerTwo are the same")
 
-      if (userId === playerOne){
+      if (userId === playerOne && currentPlayer === "X"){
         console.log("player one true")
         return true
-      } else if (userId === playerTwo) {
+      } else if (userId === playerTwo && currentPlayer === "O") {
         console.log("player two true")
         return true
       } else {
@@ -176,8 +171,22 @@ function onGameOver(snap) {
 		$('#game-over-modal .modal-body').html(`<p>Player ${snap.val()} has won!</p>`)
 	}
 
-	resetGame()
-	$('#game-over-modal').modal()
+	let player1, player2
+	const uid = firebase.auth().currentUser.uid
+	// get player 1 and player 2
+	firebase.database().ref('gamestate').once('value')
+		.then(snap => snap.val())
+		.then(gamestate => {
+			player1 = gamestate.player1
+			player2 = gamestate.player2
+		})
+		.then(() => {
+			// Show modal to people who were in the game
+			if(uid === player1 || uid === player2) {
+				$('#game-over-modal').modal()
+			}
+			resetGame()
+		})
 }
 
 // Displays board when user first loads page
