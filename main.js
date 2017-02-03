@@ -32,7 +32,7 @@ const oImgUrl = "img/o.jpg"
 const gameBoardRef = firebase.database().ref('gameboard')
 const gameStateRef = firebase.database().ref('gamestate')
 const currentPlayerRef = firebase.database().ref('gamestate/current_player')
-const playerTurnRef = firebase.database().ref('gamestate/player_turn')
+// const playerTurnRef = firebase.database().ref('gamestate/player_turn')
 const activeUsersRef = firebase.database().ref('activeUsers')
 const messagesRef = firebase.database().ref('messages')
 
@@ -57,7 +57,8 @@ $('.cell').click(evt => {
       let playerOne = gameStateObject.player1
       let playerTwo = gameStateObject.player2
       let currentPlayer = gameStateObject.current_player
-      let
+      // let
+      console.log("player one when clicked", playerOne)
 
       if(userId === playerOne) console.log("user id and playerOne are the same")
       if(userId === playerTwo) console.log("user id and playerTwo are the same")
@@ -143,7 +144,8 @@ function resetGame() {
 
 	gameStateRef.update({
 		current_player: "X",
-		player_won: ""
+		player_won: "",
+    player_turn: ""
 	})
 
   $('.cell').html('')
@@ -152,6 +154,7 @@ function resetGame() {
   let player1_uid
   let player2_uid
   let currentUserUid
+  // let playerTurn
   gameStateRef.once('value')
   	.then(snap => snap.val())
   	.then(data => {
@@ -159,6 +162,7 @@ function resetGame() {
   		player1_uid = data.player1
   		player2_uid = data.player2
   		currentUserUid = firebase.auth().currentUser.uid
+      // playerTurn = data.player_turn
   	})
   	.then(() => {
   		//If current user just completed game as player 1 or two, find and move them
@@ -166,6 +170,11 @@ function resetGame() {
   			findAndMovePlayer(currentUserUid)
   		}
   	})
+    // add player one to playerTurn variable
+    .then(() => {
+      console.log("add player one to player_turn", player1_uid)
+      gameStateRef.update({player_turn: player1_uid})
+    })
 }
 
 // firebase realtime will update changes
@@ -222,12 +231,6 @@ function loadInitialGameState() {
 			}
 		})
 
-  // Make player one the first player to make a move
-  gameStateRef.once('value')
-    .then(snap => snap.val())
-    .then(gameStateObject=>{
-      playerTurnRef.update(gameStateObject.player1)
-    })
 
 	// // Loads in list of users initially, then updates when added to
 	// activeUsersRef.on('child_added', onUserAdded)
