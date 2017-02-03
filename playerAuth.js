@@ -10,7 +10,7 @@ activeUsersRef.on('value', onActiveUsersChanged)
 
 // Timeouts to clear currentUser list of non-active users
 window.setInterval(updateUserList, 5000)
-window.setInterval(player1GarbageCollect, 10000)
+window.setInterval(player1GarbageCollect, 15000)
 
 
 firebase.auth().onAuthStateChanged((user) => {
