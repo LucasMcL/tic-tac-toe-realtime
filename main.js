@@ -45,11 +45,9 @@ messagesRef.limitToLast(10).on('child_added', onMessageChange) // when new messa
 // Things that happen on click:
   // Data at cell# changed in firebase gameboard object
   // Player letter updated in firebase gamestate object
-let playerTurnUid
 
 $('.cell').click(evt => {
 
-  // let playerTurnUid
 
   $.when(
     // check if you are a user who can make a move on the gameboard
@@ -135,6 +133,7 @@ function onGameStateChange(snap) {
 
   $(`.cell.${cellId}`).html(`<img src="${src}" class="space-taken"/>`)
 
+  // update curren players turn in div
   // get game state info
   gameStateRef.once('value')
     .then(snap => snap.val())
@@ -149,7 +148,7 @@ function onGameStateChange(snap) {
       if (letter === "X"){
         console.log('It is player ones turn - game state changed')
 
-        activeUsersRef.orderByChild('uid').equalTo(player1_uid)
+        activeUsersRef.orderByChild('uid').equalTo(player2_uid)
           .once('value', (snap) => {
             console.log("check this snap", snap)
 
@@ -169,7 +168,7 @@ function onGameStateChange(snap) {
       } else if (letter === "O") {
         console.log('It is player twos turn - game state changed')
 
-        activeUsersRef.orderByChild('uid').equalTo(player2_uid)
+        activeUsersRef.orderByChild('uid').equalTo(player1_uid)
           .once('value', (snap) => {
             console.log("check this snap", snap)
 
@@ -203,7 +202,6 @@ function resetGame() {
 	gameStateRef.update({
 		current_player: "X",
 		player_won: "",
-    player_turn: ""
 	})
 
   $('.cell').html('')
@@ -228,31 +226,31 @@ function resetGame() {
   			findAndMovePlayer(currentUserUid)
   		}
   	})
-    // Westley's crazy code below
-    // add player one to playerTurn variable on game restart
-    .then(() => {
-      gameStateRef.update({player_turn: player1_uid})
-      playerTurn = player1_uid
-    })
-    .then(() => {
-      console.log("reset game playerTurn variable", playerTurn)
-      // get playerTurn id's display name from active users and put it on the DOM
-      activeUsersRef.orderByChild('uid').equalTo(playerTurn)
-        .once('value', (snap) => {
-          console.log("snap", snap)
-          // store snapshot value
-          userObject = snap.val()
+    // // Westley's crazy code below
+    // // add player one to playerTurn variable on game restart
+    // .then(() => {
+    //   gameStateRef.update({player_turn: player1_uid})
+    //   playerTurn = player1_uid
+    // })
+    // .then(() => {
+    //   console.log("reset game playerTurn variable", playerTurn)
+    //   // get playerTurn id's display name from active users and put it on the DOM
+    //   activeUsersRef.orderByChild('uid').equalTo(playerTurn)
+    //     .once('value', (snap) => {
+    //       console.log("snap", snap)
+    //       // store snapshot value
+    //       userObject = snap.val()
 
-          // snapshot returns the firebase generated key - get key from object
-          userObjectKey = Object.keys(userObject)[0]
+    //       // snapshot returns the firebase generated key - get key from object
+    //       userObjectKey = Object.keys(userObject)[0]
 
-          // store name
-          displayName = userObject[userObjectKey].displayName
+    //       // store name
+    //       displayName = userObject[userObjectKey].displayName
 
-          // update dom with player Name
-          updateTurnDiv(displayName)
-        })
-    })
+    //       // update dom with player Name
+    //       updateTurnDiv(displayName)
+    //     })
+    // })
 }
 
 // firebase realtime will update changes
@@ -308,7 +306,7 @@ function loadInitialGameState() {
 				$(`.cell.${cell_num}`).html(`<img src="${src}" class="space-taken"/>`)
 			}
 		})
-
+    .then(onGameLoadUpdateTurnDiv())
 
 	// // Loads in list of users initially, then updates when added to
 	// activeUsersRef.on('child_added', onUserAdded)
