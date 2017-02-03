@@ -32,6 +32,7 @@ const oImgUrl = "img/o.jpg"
 const gameBoardRef = firebase.database().ref('gameboard')
 const gameStateRef = firebase.database().ref('gamestate')
 const currentPlayerRef = firebase.database().ref('gamestate/current_player')
+const playerTurnRef = firebase.database().ref('gamestate/player_turn')
 const activeUsersRef = firebase.database().ref('activeUsers')
 const messagesRef = firebase.database().ref('messages')
 
@@ -56,6 +57,7 @@ $('.cell').click(evt => {
       let playerOne = gameStateObject.player1
       let playerTwo = gameStateObject.player2
       let currentPlayer = gameStateObject.current_player
+      let
 
       if(userId === playerOne) console.log("user id and playerOne are the same")
       if(userId === playerTwo) console.log("user id and playerTwo are the same")
@@ -219,6 +221,13 @@ function loadInitialGameState() {
 				$(`.cell.${cell_num}`).html(`<img src="${src}" class="space-taken"/>`)
 			}
 		})
+
+  // Make player one the first player to make a move
+  gameStateRef.once('value')
+    .then(snap => snap.val())
+    .then(gameStateObject=>{
+      playerTurnRef.update(gameStateObject.player1)
+    })
 
 	// // Loads in list of users initially, then updates when added to
 	// activeUsersRef.on('child_added', onUserAdded)
