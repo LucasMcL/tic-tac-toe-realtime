@@ -57,12 +57,9 @@ $('.cell').click(evt => {
       let playerOne = gameStateObject.player1
       let playerTwo = gameStateObject.player2
       let currentPlayer = gameStateObject.current_player
-      // let
-      console.log("player one when clicked", playerOne)
 
-      if(userId === playerOne) console.log("user id and playerOne are the same")
-      if(userId === playerTwo) console.log("user id and playerTwo are the same")
-
+      // true or false is passed to the next then
+      // if true the user is a current player and can make a move
       if (userId === playerOne && currentPlayer === "X"){
         console.log("player one true")
         return true
@@ -154,7 +151,8 @@ function resetGame() {
   let player1_uid
   let player2_uid
   let currentUserUid
-  // let playerTurn
+  let playerTurn
+  let displayName
   gameStateRef.once('value')
   	.then(snap => snap.val())
   	.then(data => {
@@ -162,7 +160,6 @@ function resetGame() {
   		player1_uid = data.player1
   		player2_uid = data.player2
   		currentUserUid = firebase.auth().currentUser.uid
-      // playerTurn = data.player_turn
   	})
   	.then(() => {
   		//If current user just completed game as player 1 or two, find and move them
@@ -170,10 +167,30 @@ function resetGame() {
   			findAndMovePlayer(currentUserUid)
   		}
   	})
-    // add player one to playerTurn variable
+    // Westley's crazy code below
+    // add player one to playerTurn variable on game restart
     .then(() => {
-      console.log("add player one to player_turn", player1_uid)
       gameStateRef.update({player_turn: player1_uid})
+      playerTurn = player1_uid
+    })
+    .then(() => {
+      console.log("reset game playerTurn variable", playerTurn)
+      // get playerTurn id's display name from active users and put it on the DOM
+      activeUsersRef.orderByChild('uid').equalTo(playerTurn)
+        .once('value', (snap) => {
+          console.log("snap", snap)
+          // store snapshot value
+          userObject = snap.val()
+
+          // snapshot returns the firebase generated key - get key from object
+          userObjectKey = Object.keys(userObject)[0]
+
+          // store name
+          displayName = userObject[userObjectKey].displayName
+
+          // update dom with player Name
+          updateTurnDiv(displayName)
+        })
     })
 }
 

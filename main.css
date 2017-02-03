@@ -129,3 +129,7 @@ tr:nth-of-type(3) td {
   border: black 1px solid;
   margin-top: 4px;
 }
+
+.turn-player {
+  color: tomato;
+}
