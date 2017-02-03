@@ -20,8 +20,8 @@
 }
 
 .cell {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   border: 6px solid #222;
 }
 
@@ -121,11 +121,19 @@ tr:nth-of-type(3) td {
 }
 
 
+/*********************
+ ** Turn Container Div
+ *********************/
 
+.turn-container {
+  border: black 1px solid;
+  margin-top: 4px;
+}
 
+.turn-player {
+  color: tomato;
+}
 
-
-
-
-
-
+.turn-letter {
+  color: skyblue;
+}

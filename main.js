@@ -1,5 +1,7 @@
 console.log('main.js loaded')
 
+// MAIN DATABASE
+
 // Initialize Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyAKwiAe0DV9z5EdUMUKQVc5weewhlQHqsg",
@@ -8,6 +10,18 @@ firebase.initializeApp({
   storageBucket: "cool-real-time-tic-tac-toe.appspot.com",
   messagingSenderId: "408081498564"
 });
+
+// TEST DATABASE
+
+// // Initialize Firebase
+// firebase.initializeApp({
+//   apiKey: "AIzaSyC9UNC_tXASVIjNS1uMC0e0GKGGau9mAzk",
+//   authDomain: "test-cool-real-time-tic.firebaseapp.com",
+//   databaseURL: "https://test-cool-real-time-tic.firebaseio.com",
+//   storageBucket: "test-cool-real-time-tic.appspot.com",
+//   messagingSenderId: "454329941612"
+// });
+
 
 //Constants
 const currentPlayerUrl = "https://cool-real-time-tic-tac-toe.firebaseio.com/gamestate/current_player.json"
@@ -18,6 +32,7 @@ const oImgUrl = "img/o.jpg"
 const gameBoardRef = firebase.database().ref('gameboard')
 const gameStateRef = firebase.database().ref('gamestate')
 const currentPlayerRef = firebase.database().ref('gamestate/current_player')
+// const playerTurnRef = firebase.database().ref('gamestate/player_turn')
 const activeUsersRef = firebase.database().ref('activeUsers')
 const messagesRef = firebase.database().ref('messages')
 const signedInUsersRef = firebase.database().ref('signedInUsers')
@@ -31,9 +46,12 @@ messagesRef.limitToLast(10).on('child_added', onMessageChange) // when new messa
 // Things that happen on click:
   // Data at cell# changed in firebase gameboard object
   // Player letter updated in firebase gamestate object
+
 $('.cell').click(evt => {
 
+
   $.when(
+    // check if you are a user who can make a move on the gameboard
     gameStateRef.once('value')
     .then((snap)=> snap.val())
     .then((gameStateObject)=>{
@@ -44,9 +62,8 @@ $('.cell').click(evt => {
       let playerTwo = gameStateObject.player2
       let currentPlayer = gameStateObject.current_player
 
-      if(userId === playerOne) console.log("user id and playerOne are the same")
-      if(userId === playerTwo) console.log("user id and playerTwo are the same")
-
+      // jquery promise - true or false is passed to the next then
+      // if true the user is a current player and can make a move
       if (userId === playerOne && currentPlayer === "X"){
         console.log("player one true")
         return true
@@ -61,6 +78,7 @@ $('.cell').click(evt => {
     // checkUserGameplay()
     )
   .then(data =>{
+
       console.log("test jquery promise", data)
       if(data){
         console.log("check user gamepaly returned true")
@@ -92,6 +110,7 @@ $('.cell').click(evt => {
               .then(data => {
                 changePlayerLetter(playerLetter)
               })
+
             } else {
               console.log("check user gameplay returned false, you are not a current player")
             }
@@ -114,6 +133,61 @@ function onGameStateChange(snap) {
   else if (cellData === "O") { var src = oImgUrl }
 
   $(`.cell.${cellId}`).html(`<img src="${src}" class="space-taken"/>`)
+
+  // update curren players turn in div
+  // get game state info
+  gameStateRef.once('value')
+    .then(snap => snap.val())
+    .then(data => {
+      // Get player 1 and player 2 uids
+      player1_uid = data.player1
+      player2_uid = data.player2
+      // currentUserUid = firebase.auth().currentUser.uid
+
+      // get current player letter
+      let letter = data.current_player
+      if (letter === "X"){
+        console.log('It is player ones turn - game state changed')
+
+        activeUsersRef.orderByChild('uid').equalTo(player2_uid)
+          .once('value', (snap) => {
+            console.log("check this snap", snap)
+
+            let userObject
+            // store snapshot value
+            userObject = snap.val()
+
+            // snapshot returns the firebase generated key - get key from object
+            userObjectKey = Object.keys(userObject)[0]
+
+            // store name
+            displayName = userObject[userObjectKey].displayName
+
+            // update dom with player Name
+            updateTurnDiv(displayName)
+        })
+      } else if (letter === "O") {
+        console.log('It is player twos turn - game state changed')
+
+        activeUsersRef.orderByChild('uid').equalTo(player1_uid)
+          .once('value', (snap) => {
+            console.log("check this snap", snap)
+
+            let userObject
+            // store snapshot value
+            userObject = snap.val()
+
+            // snapshot returns the firebase generated key - get key from object
+            userObjectKey = Object.keys(userObject)[0]
+
+            // store name
+            displayName = userObject[userObjectKey].displayName
+
+            // update dom with player Name
+            updateTurnDiv(displayName)
+        })
+      }
+    })
 }
 
 // Changes all the cell values to empty strings in database
@@ -128,7 +202,7 @@ function resetGame() {
 
 	gameStateRef.update({
 		current_player: "X",
-		player_won: ""
+		player_won: "",
 	})
 
   $('.cell').html('')
@@ -137,6 +211,8 @@ function resetGame() {
   let player1_uid
   let player2_uid
   let currentUserUid
+  let playerTurn
+  let displayName
   gameStateRef.once('value')
   	.then(snap => snap.val())
   	.then(data => {
@@ -151,6 +227,31 @@ function resetGame() {
   			findAndMovePlayer(currentUserUid)
   		}
   	})
+    // // Westley's crazy code below
+    // // add player one to playerTurn variable on game restart
+    // .then(() => {
+    //   gameStateRef.update({player_turn: player1_uid})
+    //   playerTurn = player1_uid
+    // })
+    // .then(() => {
+    //   console.log("reset game playerTurn variable", playerTurn)
+    //   // get playerTurn id's display name from active users and put it on the DOM
+    //   activeUsersRef.orderByChild('uid').equalTo(playerTurn)
+    //     .once('value', (snap) => {
+    //       console.log("snap", snap)
+    //       // store snapshot value
+    //       userObject = snap.val()
+
+    //       // snapshot returns the firebase generated key - get key from object
+    //       userObjectKey = Object.keys(userObject)[0]
+
+    //       // store name
+    //       displayName = userObject[userObjectKey].displayName
+
+    //       // update dom with player Name
+    //       updateTurnDiv(displayName)
+    //     })
+    // })
 }
 
 // firebase realtime will update changes
@@ -206,6 +307,7 @@ function loadInitialGameState() {
 				$(`.cell.${cell_num}`).html(`<img src="${src}" class="space-taken"/>`)
 			}
 		})
+    .then(onGameLoadUpdateTurnDiv())
 
 	// // Loads in list of users initially, then updates when added to
 	// activeUsersRef.on('child_added', onUserAdded)
