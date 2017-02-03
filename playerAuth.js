@@ -1,5 +1,6 @@
 // Todo:
 	// Force game end after certain amount of time
+	// Post to Signed In users immediately
 
 console.log('playerAuth.js loaded')
 
@@ -8,7 +9,8 @@ $('#sign-in-modal form').submit(createUser)
 activeUsersRef.on('value', onActiveUsersChanged)
 
 // Timeouts to clear currentUser list of non-active users
-window.setInterval(updateUserList, 10000)
+window.setInterval(updateUserList, 5000)
+window.setInterval(player1GarbageCollect, 30000)
 
 
 firebase.auth().onAuthStateChanged((user) => {
@@ -27,6 +29,9 @@ firebase.auth().onAuthStateChanged((user) => {
 				const userRef = firebase.database().ref(`activeUsers/${post_id}`)
 				userRef.onDisconnect().remove()
 			})
+
+		// Add to list of currently signed in users
+		updateUserList()
 
 		// Hide modal, load board and users
 		$('#sign-in-modal').modal('hide')
@@ -134,21 +139,27 @@ function checkUserGameplay(){
   	})
 }
 
+// Happens every 5 seconds for all users
 function updateUserList() {
-	console.log("removeInactiveUsers fired")
+	console.log("updateUserList fired")
 	const uid = firebase.auth().currentUser.uid
 
 	signedInUsersRef.push({ uid })
+}
+
+// Happens every 20 seconds for player 1
+function player1GarbageCollect() {
+	const uid = firebase.auth().currentUser.uid
 
 	// Player 1 performs garbage collection
 	gameStateRef.once('value')
 		.then(snap => snap.val().player1)
 		.then(player1 => {
-			if (uid === player1) garbageCollect()
+			if (uid === player1) matchUsersToRemove()
 		})
 }
 
-function garbageCollect() {
+function matchUsersToRemove() {
 	let uidsToRemove = []
 
 	signedInUsersRef.once('value')
@@ -171,11 +182,31 @@ function garbageCollect() {
 						}
 					}
 				})
-				.then(() => {
-					console.log("uidsToRemove", uidsToRemove)
-				})
+				.then(() => {signedInUsersRef.remove()})
+				.then(() => garbageCollect(uidsToRemove))
 		})
 }
+
+function garbageCollect(uidsToRemove) {
+	console.log('garbageCollect')
+	console.log("uidsToRemove", uidsToRemove)
+	let postIdsToRemove = []
+
+	activeUsersRef.once('value')
+		.then(snap => snap.val())
+		.then(userList => {
+			for(post_id in userList) {
+				if($.inArray(userList[post_id].uid, uidsToRemove) > -1) {
+					postIdsToRemove.push(post_id)
+				}
+			}
+		})
+		.then(() => {
+			console.log("postIdsToRemove", postIdsToRemove)
+			postIdsToRemove.forEach(id => firebase.database().ref(`activeUsers/${id}`).remove())
+		})
+}
+
 
 
 
