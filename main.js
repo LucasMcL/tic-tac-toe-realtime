@@ -1,13 +1,27 @@
 console.log('main.js loaded')
 
+// MAIN DATABASE
+
+// // Initialize Firebase
+// firebase.initializeApp({
+//   apiKey: "AIzaSyAKwiAe0DV9z5EdUMUKQVc5weewhlQHqsg",
+//   authDomain: "cool-real-time-tic-tac-toe.firebaseapp.com",
+//   databaseURL: "https://cool-real-time-tic-tac-toe.firebaseio.com",
+//   storageBucket: "cool-real-time-tic-tac-toe.appspot.com",
+//   messagingSenderId: "408081498564"
+// });
+
+// TEST DATABASE
+
 // Initialize Firebase
 firebase.initializeApp({
-  apiKey: "AIzaSyAKwiAe0DV9z5EdUMUKQVc5weewhlQHqsg",
-  authDomain: "cool-real-time-tic-tac-toe.firebaseapp.com",
-  databaseURL: "https://cool-real-time-tic-tac-toe.firebaseio.com",
-  storageBucket: "cool-real-time-tic-tac-toe.appspot.com",
-  messagingSenderId: "408081498564"
+  apiKey: "AIzaSyC9UNC_tXASVIjNS1uMC0e0GKGGau9mAzk",
+  authDomain: "test-cool-real-time-tic.firebaseapp.com",
+  databaseURL: "https://test-cool-real-time-tic.firebaseio.com",
+  storageBucket: "test-cool-real-time-tic.appspot.com",
+  messagingSenderId: "454329941612"
 });
+
 
 //Constants
 const currentPlayerUrl = "https://cool-real-time-tic-tac-toe.firebaseio.com/gamestate/current_player.json"
