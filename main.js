@@ -306,7 +306,7 @@ function loadInitialGameState() {
 				$(`.cell.${cell_num}`).html(`<img src="${src}" class="space-taken"/>`)
 			}
 		})
-    .then(onGameLoadUpdateTurnDiv())
+    // .then(onGameLoadUpdateTurnDiv())
 
 	// // Loads in list of users initially, then updates when added to
 	// activeUsersRef.on('child_added', onUserAdded)
