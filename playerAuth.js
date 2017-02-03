@@ -10,7 +10,7 @@ activeUsersRef.on('value', onActiveUsersChanged)
 
 // Timeouts to clear currentUser list of non-active users
 window.setInterval(updateUserList, 5000)
-window.setInterval(player1GarbageCollect, 30000)
+window.setInterval(player1GarbageCollect, 10000)
 
 
 firebase.auth().onAuthStateChanged((user) => {
@@ -141,7 +141,6 @@ function checkUserGameplay(){
 
 // Happens every 5 seconds for all users
 function updateUserList() {
-	console.log("updateUserList fired")
 	const uid = firebase.auth().currentUser.uid
 
 	signedInUsersRef.push({ uid })
@@ -192,6 +191,7 @@ function garbageCollect(uidsToRemove) {
 	console.log("uidsToRemove", uidsToRemove)
 	let postIdsToRemove = []
 
+	// Remove users that weren't in signed in users list
 	activeUsersRef.once('value')
 		.then(snap => snap.val())
 		.then(userList => {
@@ -204,6 +204,29 @@ function garbageCollect(uidsToRemove) {
 		.then(() => {
 			console.log("postIdsToRemove", postIdsToRemove)
 			postIdsToRemove.forEach(id => firebase.database().ref(`activeUsers/${id}`).remove())
+		})
+
+	// Remove duplicate users
+	let duplicatePostIdsToRemove = []
+	activeUsersRef.once('value')
+		.then(snap => snap.val())
+		.then(userList => {
+			// Find duplicates
+			for(post_id in userList) {
+				let uidToCheck = userList[post_id].uid
+				let matchesFound = 0
+				for(post_id in userList) {
+					let uid = userList[post_id].uid
+					if(uidToCheck === uid) matchesFound++
+					if(matchesFound >= 2) duplicatePostIdsToRemove.push(post_id)
+				}
+			}
+		})
+		.then(() => {
+			for(let i = 0; i < duplicatePostIdsToRemove.length; i++) {
+				const post_id = duplicatePostIdsToRemove[i]
+				firebase.database().ref(`activeUsers/${post_id}`).remove()
+			}
 		})
 }
 
