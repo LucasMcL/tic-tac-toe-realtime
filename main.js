@@ -171,8 +171,22 @@ function onGameOver(snap) {
 		$('#game-over-modal .modal-body').html(`<p>Player ${snap.val()} has won!</p>`)
 	}
 
-	resetGame()
-	$('#game-over-modal').modal()
+	let player1, player2
+	const uid = firebase.auth().currentUser.uid
+	// get player 1 and player 2
+	firebase.database().ref('gamestate').once('value')
+		.then(snap => snap.val())
+		.then(gamestate => {
+			player1 = gamestate.player1
+			player2 = gamestate.player2
+		})
+		.then(() => {
+			// Show modal to people who were in the game
+			if(uid === player1 || uid === player2) {
+				$('#game-over-modal').modal()
+			}
+			resetGame()
+		})
 }
 
 // Displays board when user first loads page
