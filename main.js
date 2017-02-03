@@ -20,6 +20,7 @@ const gameStateRef = firebase.database().ref('gamestate')
 const currentPlayerRef = firebase.database().ref('gamestate/current_player')
 const activeUsersRef = firebase.database().ref('activeUsers')
 const messagesRef = firebase.database().ref('messages')
+const signedInUsersRef = firebase.database().ref('signedInUsers')
 
 //Event Listeners
 gameBoardRef.on('child_changed', onGameStateChange) //X or O added to game board

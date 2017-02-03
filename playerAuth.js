@@ -1,8 +1,14 @@
+// Todo:
+	// Force game end after certain amount of time
+
 console.log('playerAuth.js loaded')
 
 // Event listeners
 $('#sign-in-modal form').submit(createUser)
 activeUsersRef.on('value', onActiveUsersChanged)
+
+// Timeouts to clear currentUser list of non-active users
+window.setInterval(updateUserList, 10000)
 
 
 firebase.auth().onAuthStateChanged((user) => {
@@ -94,12 +100,6 @@ function findAndMovePlayer(uid) {
 		})
 }
 
-
-
-
-
-
-
 function checkUserGameplay(){
 
   // grab current player uids
@@ -133,3 +133,60 @@ function checkUserGameplay(){
   		}
   	})
 }
+
+function updateUserList() {
+	console.log("removeInactiveUsers fired")
+	const uid = firebase.auth().currentUser.uid
+
+	signedInUsersRef.push({ uid })
+
+	// Player 1 performs garbage collection
+	gameStateRef.once('value')
+		.then(snap => snap.val().player1)
+		.then(player1 => {
+			if (uid === player1) garbageCollect()
+		})
+}
+
+function garbageCollect() {
+	let uidsToRemove = []
+
+	signedInUsersRef.once('value')
+		.then(snap => Object.values(snap.val()))
+		.then(users => {
+			let uids = []
+			users.forEach(user => {uids.push(user.uid)})
+
+			activeUsersRef.once('value')
+				.then(snap => Object.values(snap.val()))
+				.then(activeUsers => {
+					for(let i = 0; i < activeUsers.length; i++) {
+						let uidToCheck = activeUsers[i].uid
+						let match = false
+						for(let i = 0; i < uids.length; i++) {
+							if(uids[i] === uidToCheck) match = true
+						}
+						if(!match) {
+							uidsToRemove.push(uidToCheck)
+						}
+					}
+				})
+				.then(() => {
+					console.log("uidsToRemove", uidsToRemove)
+				})
+		})
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
